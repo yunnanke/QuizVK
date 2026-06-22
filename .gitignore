@@ -1,0 +1,231 @@
+# Visual Studio Solution Files
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.sln.ide
+*.vsp
+*.vspx
+*.psess
+*.vspf
+*.vsconfig
+*.vsidx
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Visual Studio 2017/2019/2022 Cache directories
+.vs/
+.vsconfig
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[bB]in/
+[Oo]bj/
+[Bb]uild/
+out/
+
+# MSBuild
+*.msbuild
+*.msbuild.user
+*.msbuild.imports
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+packages/
+*.packages.config
+!packages/repositories.config
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+*.testresult
+
+# NCrunch
+*.ncrunch*
+*.*crunch*.local.xml
+
+# ReSharper
+*.ReSharper*
+_ReSharper*
+*.DotSettings.user
+*.cache
+*.resharper.user
+*.resharper.cache
+
+# Rider
+*.sln.iml
+.idea/
+
+# Compiled TypeScript
+*.js.map
+*.js
+!*.min.js
+!jquery*.js
+!angular*.js
+
+# Database files
+*.mdf
+*.ldf
+*.sdf
+*.dbmdl
+
+# Logs
+*.log
+*.logs
+logs/
+
+# Temp files
+*.tmp
+*.temp
+*.bak
+*.cache
+*.sbr
+*.pdb
+*.pdb.meta
+*.iobj
+*.ipdb
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.dmp
+*.crash
+
+# Crash reports
+crashlytics-build.properties
+*.crashreport
+
+# Application Configuration
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+secrets.json
+secrets.*.json
+
+# Docker
+*.dockerignore
+*.dockerfile
+!Dockerfile
+
+# Certificates
+*.pfx
+*.p12
+*.snk
+*.key
+*.cer
+
+# Publish profiles
+*.pubxml
+*.pubxml.user
+*.publishproj
+*.publishsettings
+
+# Azure
+*.csdef
+*.cscfg
+*.ccproj
+*.azurePubxml
+*.azurePubxml.user
+PublishScripts/
+
+# Python (если используете IronPython)
+*.pyc
+__pycache__/
+
+# Node.js (если есть NPM в проекте)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Git
+*.orig
+.git/
+.gitattributes
+.gitignore
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Visual Studio user specific files
+*.vspscc
+*.vssscc
+*.vspsc
+_TeamCity/
+.vs/
+
+# Build output and intermediate files
+*.obj
+*.lib
+*.exp
+*.ilk
+*.meta
+*.tlb
+*.tlh
+*.pch
+*.idb
+
+# Package and cache files
+*.nupkg
+*.snupkg
+project.lock.json
+*.project.lock.json
+*.project.assets.json
+
+# Test results
+*.trx
+*.coverage
+*.coveragexml
+*.coveragejson
+*.coveragexml
+*.axml
+*.ccxml
+*.tmp
+TestResults/
+
+# Diagnostics
+*.etl
+*.etlx
+
+# StyleCop
+StyleCopReport.xml
+
+# Backup files
+*~
+*.backup
+*.old
+
+# Windows Installer
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Setup files
+*.setup
+*.setup.runtimeconfig.json
+
+# Publish
+*.pubxml
+*.publishproj
+*.publishsettings
+*.azurePubxml
