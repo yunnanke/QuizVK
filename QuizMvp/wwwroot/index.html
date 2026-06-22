@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QuizMVP</title>
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">Q</div>
+      <div>
+        <strong>QuizMVP</strong>
+        <span id="userBadge"></span>
+      </div>
+    </div>
+    <nav>
+      <button data-view="dashboard">Кабинет</button>
+      <button data-view="builder" class="organizer-only">Редактор</button>
+      <button data-view="room">Комната</button>
+      <button id="logoutBtn" class="ghost">Выйти</button>
+    </nav>
+  </header>
+
+  <main class="app-shell">
+    <section id="authView" class="view auth-layout">
+      <aside class="panel hero-panel">
+        <p class="eyebrow">Realtime quiz platform</p>
+        <h1>Квизы, комнаты и лидерборды в одном рабочем окне</h1>
+        <p class="lead">Регистрация, авторизация, редактор вопросов, WebSocket-сессии и история участия уже собраны в одном MVP.</p>
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <strong>Live</strong>
+            <span>Обновления комнаты без перезагрузки</span>
+          </div>
+          <div class="kpi-card">
+            <strong>SQLite</strong>
+            <span>Квизы, сессии и ответы сохраняются локально</span>
+          </div>
+          <div class="kpi-card">
+            <strong>2 роли</strong>
+            <span>Организатор и участник с разными правами</span>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel auth-card">
+        <h2>Вход в систему</h2>
+        <div class="tabs">
+          <button class="active" data-auth="login">Вход</button>
+          <button data-auth="register">Регистрация</button>
+        </div>
+        <form id="authForm" class="form-stack">
+          <label class="register-field">
+            Имя
+            <input name="displayName" autocomplete="name" placeholder="Иван">
+          </label>
+          <label>
+            Почта
+            <input name="email" type="email" autocomplete="email" value="organizer@example.com" required>
+          </label>
+          <label>
+            Пароль
+            <input name="password" type="password" autocomplete="current-password" value="1234" required>
+          </label>
+          <label class="register-field">
+            Роль
+            <select name="role">
+              <option value="Organizer">Организатор</option>
+              <option value="Participant">Участник</option>
+            </select>
+          </label>
+          <button type="submit">Продолжить</button>
+        </form>
+        <p class="hint">Демо-доступы: organizer@example.com / 1234 и participant@example.com / 1234.</p>
+        <p id="authError" class="error"></p>
+      </section>
+    </section>
+
+    <section id="dashboardView" class="view">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Рабочее пространство</p>
+          <h1>Личный кабинет</h1>
+          <p>Квизы, история и активные сессии собраны в одном месте.</p>
+        </div>
+        <button id="newQuizBtn" class="organizer-only">Создать квиз</button>
+      </div>
+
+      <div id="dashboardStats" class="stats-grid"></div>
+
+      <div class="grid two">
+        <section class="panel surface">
+          <div class="section-head compact">
+            <div>
+              <h2>Квизы</h2>
+              <p class="hint">Список созданных и доступных квизов.</p>
+            </div>
+          </div>
+          <div id="quizList" class="list"></div>
+        </section>
+
+        <section class="panel surface">
+          <div class="section-head compact">
+            <div>
+              <h2>История</h2>
+              <p class="hint">Здесь фиксируются созданные и пройденные сессии.</p>
+            </div>
+          </div>
+          <div id="historyList" class="list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="builderView" class="view">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Редактор</p>
+          <h1>Редактор квиза</h1>
+          <p>Текстовые и изображенческие вопросы, один или несколько ответов.</p>
+        </div>
+        <button id="saveQuizBtn">Сохранить</button>
+      </div>
+
+      <section class="panel surface builder-card">
+        <div class="grid three">
+          <label>Название <input id="quizTitle" placeholder="Например, История связи"></label>
+          <label>Категория <input id="quizCategory" placeholder="IT, спорт, кино"></label>
+          <label>Секунд на вопрос <input id="quizSeconds" type="number" min="10" max="180" value="30"></label>
+        </div>
+        <label>Правила <textarea id="quizRules" rows="2" placeholder="Кратко опишите правила начисления баллов"></textarea></label>
+      </section>
+
+      <section class="panel surface">
+        <div class="section-head compact">
+          <div>
+            <h2>Вопросы</h2>
+            <p class="hint">Добавляйте карточки вопросов и ответы прямо здесь.</p>
+          </div>
+          <button id="addQuestionBtn">Добавить вопрос</button>
+        </div>
+        <div id="questionsEditor"></div>
+      </section>
+    </section>
+
+    <section id="roomView" class="view">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Комната</p>
+          <h1>Комната квиза</h1>
+          <p id="roomStatus" class="room-status">Ожидание подключения к комнате.</p>
+        </div>
+        <div class="room-code-pill">Code <strong id="roomCodeLabel">------</strong></div>
+      </div>
+
+      <div class="grid two room-grid">
+        <section class="panel surface">
+          <div class="grid two room-controls">
+            <label>Код комнаты <input id="roomCode" placeholder="ABC123"></label>
+            <label class="organizer-only">Квиз <select id="sessionQuiz"></select></label>
+          </div>
+          <div class="actions">
+            <button id="joinRoomBtn">Подключиться</button>
+            <button id="createSessionBtn" class="organizer-only">Создать комнату</button>
+            <button id="startSessionBtn" class="organizer-only">Старт</button>
+            <button id="nextQuestionBtn" class="organizer-only">Следующий</button>
+            <button id="endSessionBtn" class="organizer-only ghost">Завершить</button>
+          </div>
+          <div class="room-meta">
+            <div class="meta-card">
+              <span>Статус</span>
+              <strong id="sessionStateBadge">Lobby</strong>
+            </div>
+            <div class="meta-card">
+              <span>Прогресс</span>
+              <strong id="sessionProgressBadge">0 / 0</strong>
+            </div>
+            <div class="meta-card">
+              <span>Ответы</span>
+              <strong id="answeredBadge">0</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel surface">
+          <h2>Лидерборд</h2>
+          <div id="leaderboard" class="leaderboard"></div>
+        </section>
+      </div>
+
+      <section id="questionPanel" class="panel surface question"></section>
+    </section>
+  </main>
+
+  <template id="questionTemplate">
+    <article class="question-card">
+      <div class="question-grid">
+        <label>Текст вопроса <textarea class="q-text" rows="2"></textarea></label>
+        <label>Тип
+          <select class="q-kind">
+            <option value="Text">Текст</option>
+            <option value="Image">Изображение</option>
+          </select>
+        </label>
+        <label>URL изображения <input class="q-image" placeholder="https://..."></label>
+        <label>Выбор
+          <select class="q-mode">
+            <option value="Single">Один ответ</option>
+            <option value="Multiple">Несколько ответов</option>
+          </select>
+        </label>
+      </div>
+      <div class="options"></div>
+      <div class="actions">
+        <button class="add-option" type="button">Добавить вариант</button>
+        <button class="remove-question ghost" type="button">Удалить вопрос</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

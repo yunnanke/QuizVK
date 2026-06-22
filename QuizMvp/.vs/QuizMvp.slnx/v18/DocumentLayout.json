@@ -1,0 +1,79 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\QuizMvp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:QuizMvp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\QuizMvp.csproj.user||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:QuizMvp.csproj.user||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-17T15:47:12.591Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "QuizMvp.csproj",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\QuizMvp.csproj",
+              "RelativeDocumentMoniker": "QuizMvp.csproj",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\QuizMvp.csproj",
+              "RelativeToolTip": "QuizMvp.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-06-17T15:47:09.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "QuizMvp.csproj.user",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\QuizMvp.csproj.user",
+              "RelativeDocumentMoniker": "QuizMvp.csproj.user",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\QuizMvp.csproj.user",
+              "RelativeToolTip": "QuizMvp.csproj.user",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003464|",
+              "WhenOpened": "2026-06-17T15:47:06.598Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
