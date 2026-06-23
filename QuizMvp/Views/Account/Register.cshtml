@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Регистрация - QuizVK</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+    <style>
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; }
+        .card { border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .btn-primary { background: #667eea; border: none; }
+        .btn-primary:hover { background: #5a67d8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card p-5">
+                    <h2 class="text-center mb-4">🎯 QuizVK</h2>
+                    <h5 class="text-center text-muted mb-4">Создать аккаунт</h5>
+                    
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger">@ViewBag.Error</div>
+                    }
+                    
+                    <form method="post" action="/Account/Register">
+                        <div class="mb-3">
+                            <label class="form-label">Имя пользователя</label>
+                            <input type="text" name="username" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Пароль</label>
+                            <input type="password" name="password" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Роль</label>
+                            <select name="role" class="form-select">
+                                <option value="Participant">Участник</option>
+                                <option value="Organizer">Организатор</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2">Зарегистрироваться</button>
+                    </form>
+                    
+                    <div class="text-center mt-3">
+                        <small>Уже есть аккаунт? <a href="/Account/Login">Войти</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

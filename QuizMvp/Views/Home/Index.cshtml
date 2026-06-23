@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Главная";
+    var username = Context.Session.GetString("Username");
+    var role = Context.Session.GetString("Role");
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1 class="display-4">Добро пожаловать, @username! 👋</h1>
+            <p class="lead">Вы вошли как <strong>@role</strong></p>
+        </div>
+    </div>
+
+    @if (role == "Organizer")
+    {
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">📝 Создать квиз</h3>
+                        <p class="card-text">Создайте новый квиз с вопросами и вариантами ответов</p>
+                        <a href="/Quiz/Create" class="btn btn-primary">Создать</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">📋 Мои квизы</h3>
+                        <p class="card-text">Просмотр и управление созданными квизами</p>
+                        <a href="/Quiz/MyQuizzes" class="btn btn-success">Перейти</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">🏆 Статистика</h3>
+                        <p class="card-text">Аналитика по проведенным квизам</p>
+                        <a href="/Quiz/Statistics" class="btn btn-info">Посмотреть</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row mt-4">
+            <div class="col-md-6 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center p-5">
+                        <h3>🔑 Войти в комнату</h3>
+                        <p class="text-muted">Введите код комнаты для участия в квизе</p>
+                        <form action="/Quiz/Join" method="get" class="mt-3">
+                            <div class="input-group input-group-lg">
+                                <input type="text" name="roomCode" class="form-control" placeholder="Код комнаты" maxlength="6" required />
+                                <button class="btn btn-primary" type="submit">Подключиться</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4>📊 История участия</h4>
+                        <div id="historyContainer">
+                            <p class="text-muted text-center">Загрузка...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        @if (role == "Participant")
+        {
+                <text>
+                    $(document).ready(function() {
+                        $.get('/Quiz/GetHistory', function(data) {
+                            var html = '';
+                            if (data.length === 0) {
+                                html = '<p class="text-muted text-center">Вы еще не участвовали в квизах</p>';
+                            } else {
+                                html = '<ul class="list-group">';
+                                data.forEach(function(item) {
+                                    html += `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                        ${item.quizTitle}
+                                        <span class="badge bg-primary rounded-pill">${item.score} баллов</span>
+                                </li>`;
+                            });
+                            html += '</ul>';
+                        }
+                        $('#historyContainer').html(html);
+                    });
+                });
+            </text>
+    }
+</script>
+}

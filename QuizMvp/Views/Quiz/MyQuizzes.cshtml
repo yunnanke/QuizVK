@@ -1,0 +1,48 @@
+﻿@model List<Quiz>
+
+@{
+    ViewData["Title"] = "Мои квизы";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>📋 Мои квизы</h2>
+            <hr />
+            
+            @if (Model.Count == 0)
+            {
+                <div class="text-center p-5">
+                    <h4>У вас пока нет созданных квизов</h4>
+                    <a href="/Quiz/Create" class="btn btn-primary mt-3">Создать первый квиз</a>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var quiz in Model)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title">@quiz.Title</h5>
+                                    <p class="card-text text-muted">@quiz.Description</p>
+                                    <p><span class="badge bg-secondary">@quiz.Category</span></p>
+                                    <p class="small">Вопросов: @quiz.Questions.Count</p>
+                                    <div class="d-flex gap-2">
+                                        <a href="/Quiz/Play?quizId=@quiz.Id" class="btn btn-warning btn-sm">▶️ Играть</a>
+                                        <a href="/Quiz/StartQuiz?quizId=@quiz.Id" class="btn btn-success btn-sm">🚀 Запустить</a>
+                                        <a href="/Quiz/Edit/@quiz.Id" class="btn btn-outline-primary btn-sm">✏️ Редактировать</a>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted small">
+                                    Создан: @quiz.CreatedAt.ToString("dd.MM.yyyy")
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

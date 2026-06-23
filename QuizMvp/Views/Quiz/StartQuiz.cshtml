@@ -1,0 +1,140 @@
+﻿@model Quiz
+
+@{
+    ViewData["Title"] = "Запуск квиза";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-body text-center p-5">
+                    <h2>🚀 Запуск квиза</h2>
+                    <h4 class="mt-3">@Model.Title</h4>
+                    <p class="text-muted">@Model.Description</p>
+                    
+                    <div class="mt-4 p-4 bg-light rounded">
+                        <h5>Параметры квиза:</h5>
+                        <ul class="list-unstyled">
+                            <li><strong>Категория:</strong> @Model.Category</li>
+                            <li><strong>Вопросов:</strong> @Model.Questions.Count</li>
+                            <li><strong>Время на вопрос:</strong> @Model.TimeLimitPerQuestion сек.</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-4">
+                        <button id="startQuizBtn" class="btn btn-success btn-lg" onclick="startQuiz()">
+                            ▶️ Начать квиз
+                        </button>
+                        <a href="/Quiz/MyQuizzes" class="btn btn-secondary btn-lg ms-2">
+                            ← Назад
+                        </a>
+                    </div>
+
+                    <div id="roomInfo" style="display: none;" class="mt-4">
+                        <div class="alert alert-success">
+                            <h5>✅ Квиз запущен!</h5>
+                            <p>Код комнаты: <strong id="roomCodeDisplay" class="display-4"></strong></p>
+                            <p>Подключитесь к квизу по ссылке:</p>
+                            <div class="input-group mb-3">
+                                <input type="text" id="joinLink" class="form-control" readonly />
+                                <button class="btn btn-outline-primary" onclick="copyLink()">📋 Копировать</button>
+                            </div>
+                            <a id="joinLinkBtn" href="#" class="btn btn-primary">🔗 Перейти в комнату</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function startQuiz() {
+    const btn = document.getElementById('startQuizBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Запуск...';
+
+    const quizId = @Model.Id;
+        
+    fetch(`/Quiz/StartQuizSession?quizId=${quizId}`, {
+    method: 'POST',
+    headers: {
+    'Content-Type': 'application/json'
+    }
+    })
+    .then(response => {
+    if (!response.ok) {
+    throw new Error('Ошибка при запуске квиза');
+    }
+    return response.json();
+    })
+    .then(data => {
+    document.getElementById('roomInfo').style.display = 'block';
+    document.getElementById('roomCodeDisplay').textContent = data.roomCode;
+            
+    const joinUrl = window.location.origin + '/Quiz/Join?roomCode=' + data.roomCode;
+    document.getElementById('joinLink').value = joinUrl;
+    document.getElementById('joinLinkBtn').href = joinUrl;
+            
+    btn.textContent = '✅ Квиз запущен!';
+    btn.className = 'btn btn-info btn-lg';
+            
+    setupQuizHub(data.sessionId, data.roomCode);
+    })
+    .catch(error => {
+    console.error('Error:', error);
+    alert('Ошибка при запуске квиза: ' + error.message);
+    btn.disabled = false;
+    btn.textContent = '▶️ Начать квиз';
+    });
+    }
+
+    function setupQuizHub(sessionId, roomCode) {
+    const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/quizHub")
+    .build();
+
+    connection.start()
+    .then(() => {
+    console.log('SignalR connected');
+    connection.invoke("JoinRoom", roomCode, "Организатор");
+    })
+    .catch(err => console.error(err));
+
+    connection.on("UserJoined", function(userName) {
+    console.log(`User ${userName} joined`);
+    
+    });
+
+    connection.on("UpdateParticipants", function(participants) {
+    console.log('Participants:', participants);
+    });
+
+    window.quizHub = connection;
+    window.roomCode = roomCode;
+    window.sessionId = sessionId;
+    }
+
+    function copyLink() {
+    const linkInput = document.getElementById('joinLink');
+    linkInput.select();
+    document.execCommand('copy');
+    alert('✅ Ссылка скопирована!');
+    }
+
+    function nextQuestion() {
+    if (window.quizHub && window.roomCode) {
+    window.quizHub.invoke("NextQuestion", window.roomCode, 0, 0);
+    }
+    }
+
+    function endQuiz() {
+    if (window.quizHub && window.roomCode) {
+    window.quizHub.invoke("EndQuiz", window.roomCode);
+    }
+    }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
