@@ -3,8 +3,104 @@
   "WorkspaceRootPath": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\controllers\\quizcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\controllers\\quizcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\quiz\\play.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\quiz\\play.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\quiz\\myquizzes.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\quiz\\myquizzes.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\hub\\quizhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\hub\\quizhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\quiz\\startquiz.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\quiz\\startquiz.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\quiz\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\quiz\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\models\\answeroption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\models\\answeroption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\models\\question.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\models\\question.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\quiz\\join.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\quiz\\join.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\models\\participantanswer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\models\\participantanswer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\models\\session.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\models\\session.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\models\\quiz.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\models\\quiz.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|c:\\users\\matve\\onedrive\\desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\quizmvp\\quizmvp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{E96CDFE9-B40C-47CD-B9C1-E3B4D30A11A5}|QuizMvp\\QuizMvp.csproj|solutionrelative:quizmvp\\quizmvp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +110,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,15 +122,327 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Quiz\\Create.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\Quiz\\Create.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Quiz\\Create.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\Quiz\\Create.cshtml",
+              "ViewState": "AgIAANIAAAAAAAAAAAAAwPAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T09:40:58.834Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Program.cs",
               "RelativeDocumentMoniker": "QuizMvp\\Program.cs",
               "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Program.cs",
               "RelativeToolTip": "QuizMvp\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAAAmwDYAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-17T15:46:06.331Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Question.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\Question.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Models\\Question.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\Question.cs",
+              "RelativeToolTip": "QuizMvp\\Models\\Question.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswAwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T09:30:45.825Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AnswerOption.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\AnswerOption.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Models\\AnswerOption.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\AnswerOption.cs",
+              "RelativeToolTip": "QuizMvp\\Models\\AnswerOption.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T09:31:04.215Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MyQuizzes.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Quiz\\MyQuizzes.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\Quiz\\MyQuizzes.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Quiz\\MyQuizzes.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\Quiz\\MyQuizzes.cshtml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAACAAAAB5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T10:40:23.424Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "QuizHub.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Hub\\QuizHub.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Hub\\QuizHub.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Hub\\QuizHub.cs",
+              "RelativeToolTip": "QuizMvp\\Hub\\QuizHub.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwDEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T09:35:22.343Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "QuizController.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Controllers\\QuizController.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Controllers\\QuizController.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Controllers\\QuizController.cs",
+              "RelativeToolTip": "QuizMvp\\Controllers\\QuizController.cs",
+              "ViewState": "AgIAALcAAAAAAAAAAAAqwEgBAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T09:36:50.722Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Play.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Quiz\\Play.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\Quiz\\Play.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Quiz\\Play.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\Quiz\\Play.cshtml",
+              "ViewState": "AgIAAK8AAAAAAAAAAAAAwL4AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T12:00:36.725Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Join.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Quiz\\Join.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\Quiz\\Join.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Quiz\\Join.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\Quiz\\Join.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAANoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T09:42:14.899Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "StartQuiz.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Quiz\\StartQuiz.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\Quiz\\StartQuiz.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Quiz\\StartQuiz.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\Quiz\\StartQuiz.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEgAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T11:54:43.896Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "_ViewImports.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\_ViewImports.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\_ViewImports.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\_ViewImports.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\_ViewImports.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T09:46:17.397Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "QuizMvp\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T10:43:48.84Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAwFQAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T10:45:03.825Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "_ViewStart.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\_ViewStart.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\_ViewStart.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\_ViewStart.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\_ViewStart.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T10:45:31.192Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAACsAAAAAAAAAAAAkwEUAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T09:40:11.385Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Account\\Register.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\Account\\Register.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Account\\Register.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\Account\\Register.cshtml",
+              "ViewState": "AgIAABQAAAAAAAAAAAAkwDwAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T09:39:23.525Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "QuizMvp\\Views\\Account\\Login.cshtml",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "QuizMvp\\Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-23T09:39:01.65Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "QuizMvp\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T09:36:26.74Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\appsettings.json",
+              "RelativeDocumentMoniker": "QuizMvp\\appsettings.json",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\appsettings.json",
+              "RelativeToolTip": "QuizMvp\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-23T09:33:15.998Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "QuizMvp\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T09:32:11.814Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ParticipantAnswer.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\ParticipantAnswer.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Models\\ParticipantAnswer.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\ParticipantAnswer.cs",
+              "RelativeToolTip": "QuizMvp\\Models\\ParticipantAnswer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T09:31:44.054Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Session.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\Session.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Models\\Session.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\Session.cs",
+              "RelativeToolTip": "QuizMvp\\Models\\Session.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T09:31:23.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Quiz.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\Quiz.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Models\\Quiz.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\Quiz.cs",
+              "RelativeToolTip": "QuizMvp\\Models\\Quiz.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T09:30:15.312Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\User.cs",
+              "RelativeDocumentMoniker": "QuizMvp\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\Models\\User.cs",
+              "RelativeToolTip": "QuizMvp\\Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T09:29:40.084Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "QuizMvp",
+              "DocumentMoniker": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\QuizMvp.csproj",
+              "RelativeDocumentMoniker": "QuizMvp\\QuizMvp.csproj",
+              "ToolTip": "C:\\Users\\matve\\OneDrive\\Desktop\\\u043F\u0440\u043E\u0435\u043A\u0442\\QuizMvp\\QuizMvp.csproj",
+              "RelativeToolTip": "QuizMvp\\QuizMvp.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-06-23T09:26:22.064Z",
               "EditorCaption": ""
             }
           ]

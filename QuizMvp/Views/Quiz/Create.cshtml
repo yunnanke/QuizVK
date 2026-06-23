@@ -1,0 +1,268 @@
+﻿@{
+    ViewData["Title"] = "Создание квиза";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>📝 Создание нового квиза</h2>
+            <hr />
+            
+            <form id="quizForm">
+                <!-- Основная информация -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5>Основная информация</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Название квиза *</label>
+                                    <input type="text" id="quizTitle" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Категория</label>
+                                    <select id="quizCategory" class="form-select">
+                                        <option value="general">Общая</option>
+                                        <option value="science">Наука</option>
+                                        <option value="history">История</option>
+                                        <option value="geography">География</option>
+                                        <option value="entertainment">Развлечения</option>
+                                        <option value="sport">Спорт</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Описание</label>
+                            <textarea id="quizDescription" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Время на вопрос (сек)</label>
+                                    <input type="number" id="quizTimeLimit" class="form-control" value="30" min="5" max="120" />
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Правила</label>
+                                    <input type="text" id="quizRules" class="form-control" placeholder="Дополнительные правила проведения" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вопросы -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5>Вопросы</h5>
+                        <div id="questionsContainer">
+                            <!-- Вопросы будут добавляться сюда -->
+                        </div>
+                        <button type="button" class="btn btn-success mt-3" onclick="addQuestion()">
+                            + Добавить вопрос
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Кнопки -->
+                <div class="mb-5">
+                    <button type="button" class="btn btn-primary btn-lg" onclick="saveQuiz()">💾 Сохранить квиз</button>
+                    <a href="/" class="btn btn-secondary btn-lg">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let questionCount = 0;
+
+    function addQuestion() {
+        questionCount++;
+        const container = document.getElementById('questionsContainer');
+        const div = document.createElement('div');
+        div.className = 'card mb-3';
+        div.style.borderLeft = '4px solid #667eea';
+        div.innerHTML = `
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h6>Вопрос #${questionCount}</h6>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.card').remove()">✕</button>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-2">
+                            <label class="form-label">Текст вопроса</label>
+                            <input type="text" class="form-control question-text" placeholder="Введите вопрос" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-2">
+                            <label class="form-label">Баллы</label>
+                            <input type="number" class="form-control question-points" value="10" min="1" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-2">
+                            <label class="form-label">Тип</label>
+                            <select class="form-select question-type">
+                                <option value="text">Текстовый</option>
+                                <option value="image">С изображением</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-2">
+                            <label class="form-label">URL изображения (если есть)</label>
+                            <input type="text" class="form-control question-image" placeholder="https://example.com/image.jpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input class="form-check-input question-multiple" type="checkbox" />
+                        <label class="form-check-label">Множественный выбор</label>
+                    </div>
+                </div>
+                <div class="options-container">
+                    <label class="form-label">Варианты ответов</label>
+                    <div class="option-item mb-1">
+                        <div class="input-group">
+                            <input type="text" class="form-control option-text" placeholder="Вариант ответа" />
+                            <input type="text" class="form-control option-image" placeholder="URL картинки (опционально)" style="width: 150px;" />
+                            <div class="input-group-text">
+                                <input type="checkbox" class="form-check-input option-correct" /> Правильный
+                            </div>
+                            <button type="button" class="btn btn-outline-danger" onclick="this.closest('.option-item').remove()">✕</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addOption(this)">+ Добавить вариант</button>
+            </div>
+        `;
+        container.appendChild(div);
+    }
+
+    function addOption(button) {
+        const container = button.closest('.card-body').querySelector('.options-container');
+        const div = document.createElement('div');
+        div.className = 'option-item mb-1';
+        div.innerHTML = `
+            <div class="input-group">
+                <input type="text" class="form-control option-text" placeholder="Вариант ответа" />
+                <input type="text" class="form-control option-image" placeholder="URL картинки (опционально)" style="width: 150px;" />
+                <div class="input-group-text">
+                    <input type="checkbox" class="form-check-input option-correct" /> Правильный
+                </div>
+                <button type="button" class="btn btn-outline-danger" onclick="this.closest('.option-item').remove()">✕</button>
+            </div>
+        `;
+        container.appendChild(div);
+    }
+
+    // Добавить первый вопрос при загрузке
+    document.addEventListener('DOMContentLoaded', function() {
+        addQuestion();
+    });
+
+        function saveQuiz() {
+        // Сбор данных
+        const quiz = {
+            Title: document.getElementById('quizTitle').value.trim(),
+            Description: document.getElementById('quizDescription').value.trim(),
+            Category: document.getElementById('quizCategory').value,
+            TimeLimit: parseInt(document.getElementById('quizTimeLimit').value) || 30,
+            Rules: document.getElementById('quizRules').value.trim(),
+            Questions: []
+        };
+
+        // Проверка названия
+        if (!quiz.Title) {
+            alert('Введите название квиза!');
+            return;
+        }
+
+        // Сбор вопросов
+        let hasErrors = false;
+        document.querySelectorAll('#questionsContainer .card').forEach(qCard => {
+            const questionText = qCard.querySelector('.question-text').value.trim();
+            if (!questionText) {
+                alert('Заполните текст вопроса!');
+                hasErrors = true;
+                return;
+            }
+
+            const options = [];
+            qCard.querySelectorAll('.option-item').forEach(optItem => {
+                const optionText = optItem.querySelector('.option-text').value.trim();
+                if (optionText) {
+                    options.push({
+                        Text: optionText,
+                        ImageUrl: optItem.querySelector('.option-image').value.trim() || null,
+                        IsCorrect: optItem.querySelector('.option-correct').checked
+                    });
+                }
+            });
+
+            if (options.length < 2) {
+                alert('Добавьте минимум 2 варианта ответа!');
+                hasErrors = true;
+                return;
+            }
+
+            if (!options.some(o => o.IsCorrect)) {
+                alert('Отметьте правильный вариант ответа!');
+                hasErrors = true;
+                return;
+            }
+
+            const question = {
+                Text: questionText,
+                Type: qCard.querySelector('.question-type').value,
+                ImageUrl: qCard.querySelector('.question-image').value.trim() || null,
+                IsMultipleChoice: qCard.querySelector('.question-multiple').checked,
+                Points: parseInt(qCard.querySelector('.question-points').value) || 10,
+                Options: options
+            };
+            quiz.Questions.push(question);
+        });
+
+        if (hasErrors || quiz.Questions.length === 0) {
+            return;
+        }
+
+        fetch('/Quiz/CreateQuiz', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(quiz)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.error || 'Ошибка сервера'); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.id) {
+                alert('✅ Квиз успешно создан!');
+                window.location.href = '/Quiz/MyQuizzes';
+            } else {
+                alert('❌ Ошибка при создании квиза: ' + (data.message || 'Неизвестная ошибка'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Произошла ошибка при сохранении: ' + error.message);
+        });
+    }
+</script>

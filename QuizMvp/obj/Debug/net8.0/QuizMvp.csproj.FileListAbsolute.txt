@@ -26,7 +26,6 @@ C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\obj\Debug\net8.0\refint\Qui
 C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\obj\Debug\net8.0\QuizMvp.pdb
 C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\obj\Debug\net8.0\QuizMvp.genruntimeconfig.cache
 C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\obj\Debug\net8.0\ref\QuizMvp.dll
-C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Data\store.json
 C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\QuizMvp.staticwebassets.runtime.json
 C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\obj\Debug\net8.0\QuizMvp.csproj.AssemblyReference.cache
 C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Microsoft.Data.Sqlite.dll
@@ -54,3 +53,18 @@ C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\runtimes\w
 C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\obj\Debug\net8.0\QuizMvp.csproj.Up2Date
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\obj\Debug\net8.0\QuizMvp.RazorAssemblyInfo.cache
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\obj\Debug\net8.0\QuizMvp.RazorAssemblyInfo.cs
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\obj\Debug\net8.0\QuizMvp.sourcelink.json
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Humanizer.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Sqlite.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
+C:\Users\matve\OneDrive\Desktop\проект\QuizMvp\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

@@ -1,0 +1,301 @@
+﻿@model Quiz
+
+@{
+    ViewData["Title"] = "Прохождение квиза";
+    var sessionId = ViewBag.SessionId;
+    var roomCode = ViewBag.RoomCode;
+    var totalQuestions = ViewBag.TotalQuestions;
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>@Model.Title</h3>
+                        <span class="badge bg-primary" id="questionCounter">1/@totalQuestions</span>
+                    </div>
+                    
+                    <div id="questionContainer">
+                        <!-- Вопросы будут загружаться сюда -->
+                        <div class="text-center p-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Загрузка...</span>
+                            </div>
+                            <p class="mt-2">Загрузка вопросов...</p>
+                        </div>
+                    </div>
+
+                    <div id="resultContainer" style="display: none;">
+                        <!-- Результаты -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const sessionId = @sessionId;
+    const totalQuestions = @totalQuestions;
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    // Подключаемся к SignalR
+    const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/quizHub")
+    .build();
+
+    connection.start().then(function () {
+    console.log('SignalR connected');
+    connection.invoke("JoinRoom", '@roomCode', 'Участник');
+    loadQuestion(0);
+    }).catch(function (err) {
+    console.error(err);
+    document.getElementById('questionContainer').innerHTML =
+    '<div class="alert alert-danger">Ошибка подключения к серверу</div>';
+    });
+
+    connection.on("QuizEnded", function () {
+    showResults();
+    });
+
+    function loadQuestion(index) {
+    fetch(`/Quiz/GetQuestion?sessionId=${sessionId}&questionIndex=${index}`)
+    .then(response => response.json())
+    .then(data => {
+    showQuestion(data);
+    })
+    .catch(error => {
+    console.error('Error:', error);
+    document.getElementById('questionContainer').innerHTML =
+    '<div class="alert alert-danger">Ошибка загрузки вопроса</div>';
+    });
+    }
+
+    function showQuestion(question) {
+    currentQuestionIndex = question.index;
+    document.getElementById('questionCounter').textContent = `${question.index + 1}/${question.total}`;
+
+    const container = document.getElementById('questionContainer');
+        
+    let optionsHtml = question.options.map(opt => `
+    <div class="form-check mb-2 p-3 border rounded hover-shadow" style="cursor: pointer;"
+    onclick="selectOption(this, ${opt.id})">
+    <input class="form-check-input" type="${question.isMultiple ? 'checkbox' : 'radio'}"
+    name="question_${question.id}" value="${opt.id}" id="opt_${opt.id}" />
+    <label class="form-check-label w-100" for="opt_${opt.id}">
+    ${opt.imageUrl ? `<img src="${opt.imageUrl}" style="max-height: 30px;" class="me-2" />` : ''}
+    ${opt.text}
+    </label>
+    </div>
+    `).join('');
+
+    container.innerHTML = `
+    <div class="question-content">
+    <div class="mb-3">
+    <h5>${question.text}</h5>
+    ${question.imageUrl ? `<img src="${question.imageUrl}" class="img-fluid mb-3" style="max-height: 200px;" />` : ''}
+    </div>
+    <div id="optionsContainer">
+    ${optionsHtml}
+    </div>
+    <button class="btn btn-primary mt-3" onclick="submitAnswer(${question.id})" id="submitBtn">
+    Ответить
+    </button>
+    <span class="ms-3 text-muted" id="timerDisplay">⏱️ <span id="timer">${30}</span> сек.</span>
+    </div>
+    `;
+
+    // Таймер
+    let timeLeft = 30;
+    const timerElement = document.getElementById('timer');
+    const timerInterval = setInterval(() => {
+    timeLeft--;
+    timerElement.textContent = timeLeft;
+    if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    submitAnswer(question.id);
+    }
+    }, 1000);
+
+    // Сохраняем таймер для очистки
+    window.currentTimer = timerInterval;
+    }
+
+    function selectOption(element, optionId) {
+    const checkbox = element.querySelector('input[type="checkbox"]');
+    const radio = element.querySelector('input[type="radio"]');
+        
+    if (checkbox) {
+    checkbox.checked = !checkbox.checked;
+    element.classList.toggle('bg-light');
+    } else if (radio) {
+    // Снимаем выделение со всех радио
+    document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+    document.querySelectorAll('.form-check').forEach(el => el.classList.remove('bg-light'));
+    radio.checked = true;
+    element.classList.add('bg-light');
+    }
+    }
+
+    function submitAnswer(questionId) {
+    // Очищаем таймер
+    if (window.currentTimer) {
+    clearInterval(window.currentTimer);
+    }
+
+    const selected = [];
+    document.querySelectorAll(`input[name="question_${questionId}"]:checked`).forEach(el => {
+    selected.push(parseInt(el.value));
+    });
+
+    if (selected.length === 0) {
+    alert('Выберите вариант ответа!');
+    return;
+    }
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Отправка...';
+
+    // ⭐ Правильный формат данных
+    const data = {
+    sessionId: sessionId,
+    questionId: questionId,
+    selectedOptionIds: selected
+    };
+
+    console.log('Sending data:', data); // Для отладки
+
+    fetch('/Quiz/SubmitAnswer', {
+    method: 'POST',
+    headers: {
+    'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+    })
+    .then(response => {
+    if (!response.ok) {
+    return response.json().then(err => {
+    throw new Error(err.error || 'Ошибка сервера');
+    });
+    }
+    return response.json();
+    })
+    .then(data => {
+    console.log('Response:', data); 
+    if (data.isCorrect) {
+    score += data.points;
+    document.getElementById('questionContainer').innerHTML =
+    `<div class="alert alert-success p-4 text-center">
+    <h3>✅ Правильно!</h3>
+    <p>+${data.points} баллов</p>
+    <button class="btn btn-primary mt-2" onclick="nextQuestion()">
+    ${currentQuestionIndex + 1 < totalQuestions ? 'Следующий вопрос →' : 'Завершить квиз 🏆'}
+    </button>
+    </div>`;
+    } else {
+    document.getElementById('questionContainer').innerHTML =
+    `<div class="alert alert-danger p-4 text-center">
+    <h3>❌ Неправильно</h3>
+    <button class="btn btn-primary mt-2" onclick="nextQuestion()">
+    ${currentQuestionIndex + 1 < totalQuestions ? 'Следующий вопрос →' : 'Завершить квиз 🏆'}
+    </button>
+    </div>`;
+    }
+    })
+    .catch(error => {
+    console.error('Error:', error);
+    alert('Ошибка при отправке ответа: ' + error.message);
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Ответить';
+    });
+    }
+
+    function nextQuestion() {
+    if (currentQuestionIndex + 1 < totalQuestions) {
+    loadQuestion(currentQuestionIndex + 1);
+    } else {
+    showResults();
+    }
+    }
+
+    function showResults() {
+    fetch(`/Quiz/GetLeaderboard?sessionId=${sessionId}`)
+    .then(response => response.json())
+    .then(data => {
+    const container = document.getElementById('resultContainer');
+    container.style.display = 'block';
+    document.getElementById('questionContainer').style.display = 'none';
+    document.getElementById('questionCounter').style.display = 'none';
+
+    let html = `
+    <div class="text-center">
+    <h2>🏆 Квиз завершен!</h2>
+    <h4>Ваш счет: ${score} баллов</h4>
+    <hr />
+    <h5>Таблица лидеров:</h5>
+    <ul class="list-group">
+    `;
+
+    if (data.length === 0) {
+    html += '<li class="list-group-item text-center">Нет данных</li>';
+    } else {
+    data.forEach((item, index) => {
+    const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index+1}.`;
+    const isYou = item.username === '@Context.Session.GetString("Username")';
+    html += `
+    <li class="list-group-item d-flex justify-content-between align-items-center ${isYou ? 'bg-primary text-white' : ''}">
+    ${medal} ${item.username} ${isYou ? '👈 Вы' : ''}
+    <span class="badge ${isYou ? 'bg-light text-dark' : 'bg-primary'} rounded-pill">${item.totalScore} баллов</span>
+    </li>
+    `;
+    });
+    }
+
+    html += `
+    </ul>
+    <a href="/" class="btn btn-primary mt-3">На главную</a>
+    </div>
+    `;
+
+    container.innerHTML = html;
+    })
+    .catch(error => {
+    console.error('Error:', error);
+    });
+    }
+
+    window.addEventListener('beforeunload', function() {
+    if (connection) {
+    connection.invoke("LeaveRoom", '@roomCode');
+    }
+    });
+</script>
+
+<style>
+    .hover-shadow:hover {
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .form-check {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    transition: all 0.2s;
+    }
+
+    .form-check:hover {
+    border-color: #667eea;
+    }
+
+    .bg-light {
+    background-color: #e9ecef !important;
+    border-color: #667eea;
+    }
+</style>
