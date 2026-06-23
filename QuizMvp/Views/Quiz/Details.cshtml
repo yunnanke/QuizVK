@@ -1,0 +1,104 @@
+﻿@model Quiz
+
+@{
+    ViewData["Title"] = "Детальная статистика";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>Детальная статистика</h2>
+            <h4 class="text-muted">@Model.Title</h4>
+            <hr />
+            
+            @if (Model.Sessions == null || Model.Sessions.Count == 0)
+            {
+                <div class="alert alert-info">
+                    Этот квиз еще не проводился
+                </div>
+            }
+            else
+            {
+                foreach (var session in Model.Sessions.OrderByDescending(s => s.StartedAt))
+                {
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <strong>Сессия от @session.StartedAt.ToString("dd.MM.yyyy HH:mm")</strong>
+                            <span class="badge bg-info ms-2">Код: @session.JoinCode</span>
+                            <span class="badge @(session.Status == SessionStatus.Finished ? "bg-success" : "bg-warning") ms-2">
+                                @session.Status
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            @if (session.ParticipantAnswers == null || !session.ParticipantAnswers.Any())
+                            {
+                                <p class="text-muted">Нет участников</p>
+                            }
+                            else
+                            {
+                                var results = session.ParticipantAnswers
+                                    .GroupBy(pa => pa.UserId)
+                                    .Select(g => new
+                                    {
+                                        Username = g.First().User?.Username ?? "Неизвестный",
+                                        TotalScore = g.Sum(pa => pa.PointsEarned),
+                                        CorrectAnswers = g.Count(pa => pa.IsCorrect),
+                                        TotalQuestions = g.Count()
+                                    })
+                                    .OrderByDescending(r => r.TotalScore)
+                                    .ToList();
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Место</th>
+                                                <th>Участник</th>
+                                                <th>Баллы</th>
+                                                <th>Правильные ответы</th>
+                                                <th>Процент</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (int i = 0; i < results.Count; i++)
+                                            {
+                                                var result = results[i];
+                                                var medal = i == 0 ? "🥇" : i == 1 ? "🥈" : i == 2 ? "🥉" : $"{i + 1}.";
+                                                var percent = result.TotalQuestions > 0
+                                                    ? Math.Round((double)result.CorrectAnswers / result.TotalQuestions * 100, 1)
+                                                    : 0;
+                                                <tr>
+                                                    <td>@medal</td>
+                                                    <td>@result.Username</td>
+                                                    <td><strong>@result.TotalScore</strong></td>
+                                                    <td>@result.CorrectAnswers / @result.TotalQuestions</td>
+                                                    <td>
+                                                        <div class="progress" style="height: 20px;">
+                                                            <div class="progress-bar @(percent >= 70 ? "bg-success" : percent >= 50 ? "bg-warning" : "bg-danger")"
+                                                                 role="progressbar"
+                                                                 style="width: @percent%;"
+                                                                 aria-valuenow="@percent"
+                                                                 aria-valuemin="0"
+                                                                 aria-valuemax="100">
+                                                                @percent%
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            
+            <div class="mt-3">
+                <a href="/Quiz/MyQuizzes" class="btn btn-secondary">← Назад</a>
+                <a href="/Quiz/Play?quizId=@Model.Id" class="btn btn-success">▶️ Играть</a>
+            </div>
+        </div>
+    </div>
+</div>

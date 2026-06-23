@@ -31,11 +31,11 @@
                     </div>
                     
                     <div id="questionContainer" style="display: none;">
-                        <!-- Здесь будут вопросы -->
+                      
                     </div>
                     
                     <div id="resultContainer" style="display: none;">
-                        <!-- Здесь будет результат -->
+                       
                     </div>
                 </div>
             </div>
@@ -55,24 +55,23 @@
         let totalQuestions = @Model.Quiz.Questions.Count;
 
         connection.start().then(function () {
-        // Присоединение к комнате
+
         connection.invoke("JoinRoom", roomCode, "Участник")
         .catch(function (err) {
         console.error(err);
         });
                 
         document.getElementById('statusContainer').innerHTML =
-        '<div class="alert alert-success">✅ Вы подключены! Ожидайте начала квиза.</div>';
+        '<div class="alert alert-success">Вы подключены! Ожидайте начала квиза.</div>';
         }).catch(function (err) {
         console.error(err);
         document.getElementById('statusContainer').innerHTML =
         '<div class="alert alert-danger">❌ Ошибка подключения</div>';
         });
 
-        // Обработчики событий
         connection.on("QuizStarted", function (sessionId) {
         document.getElementById('statusContainer').innerHTML =
-        '<div class="alert alert-success">🚀 Квиз начался!</div>';
+        '<div class="alert alert-success"> Квиз начался!</div>';
         loadQuestion(0);
         });
 
@@ -86,12 +85,12 @@
         document.getElementById('questionContainer').style.display = 'none';
         document.getElementById('resultContainer').style.display = 'block';
         document.getElementById('resultContainer').innerHTML =
-        '<div class="alert alert-success">🏆 Квиз завершен! Спасибо за участие.</div>';
+        '<div class="alert alert-success">Квиз завершен! Спасибо за участие.</div>';
         loadLeaderboard();
         });
 
         connection.on("AnswerSubmitted", function (userId, questionId) {
-        // Обновление статуса
+
         });
 
         function loadQuestion(index) {
@@ -164,11 +163,11 @@
         .then(data => {
         if (data.isCorrect) {
         document.getElementById('questionContainer').innerHTML =
-        `<div class="alert alert-success mt-3">✅ Правильно! +${data.points} баллов</div>
+        `<div class="alert alert-success mt-3">Правильно! +${data.points} баллов</div>
         <button class="btn btn-primary mt-2" onclick="nextQuestion()">Следующий вопрос →</button>`;
         } else {
         document.getElementById('questionContainer').innerHTML =
-        `<div class="alert alert-danger mt-3">❌ Неправильно</div>
+        `<div class="alert alert-danger mt-3">Неправильно</div>
         <button class="btn btn-primary mt-2" onclick="nextQuestion()">Следующий вопрос →</button>`;
         }
         })
@@ -211,7 +210,6 @@
         });
         }
         
-        // Обработка отключения
         window.addEventListener('beforeunload', function() {
         connection.invoke("LeaveRoom", roomCode);
         });

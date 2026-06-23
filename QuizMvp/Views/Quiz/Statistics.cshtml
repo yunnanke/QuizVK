@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Статистика";
+    var stats = ViewBag.Statistics as List<dynamic>;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>Статистика квизов</h2>
+            <hr />
+            
+            @if (stats == null || stats.Count == 0)
+            {
+                <div class="text-center p-5">
+                    <h4>У вас пока нет статистики</h4>
+                    <p class="text-muted">Создайте и проведите квизы, чтобы увидеть статистику</p>
+                    <a href="/Quiz/Create" class="btn btn-primary mt-3">Создать квиз</a>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var item in stats)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.QuizTitle</h5>
+                                    <div class="mt-3">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Проведено игр:</span>
+                                            <strong>@item.TotalSessions</strong>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Участников:</span>
+                                            <strong>@item.TotalParticipants</strong>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Средний балл:</span>
+                                            <strong>@Math.Round((decimal)item.AverageScore, 1)</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="/Quiz/Details/@item.QuizId" class="btn btn-outline-primary btn-sm">Подробнее</a>
+                                    <a href="/Quiz/Play?quizId=@item.QuizId" class="btn btn-outline-success btn-sm">▶️ Играть</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

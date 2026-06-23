@@ -21,7 +21,6 @@
                     </div>
                     
                     <div id="questionContainer">
-                        <!-- Вопросы будут загружаться сюда -->
                         <div class="text-center p-5">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Загрузка...</span>
@@ -31,7 +30,6 @@
                     </div>
 
                     <div id="resultContainer" style="display: none;">
-                        <!-- Результаты -->
                     </div>
                 </div>
             </div>
@@ -45,7 +43,6 @@
     let currentQuestionIndex = 0;
     let score = 0;
 
-    // Подключаемся к SignalR
     const connection = new signalR.HubConnectionBuilder()
     .withUrl("/quizHub")
     .build();
@@ -111,7 +108,6 @@
     </div>
     `;
 
-    // Таймер
     let timeLeft = 30;
     const timerElement = document.getElementById('timer');
     const timerInterval = setInterval(() => {
@@ -123,7 +119,6 @@
     }
     }, 1000);
 
-    // Сохраняем таймер для очистки
     window.currentTimer = timerInterval;
     }
 
@@ -135,7 +130,7 @@
     checkbox.checked = !checkbox.checked;
     element.classList.toggle('bg-light');
     } else if (radio) {
-    // Снимаем выделение со всех радио
+
     document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
     document.querySelectorAll('.form-check').forEach(el => el.classList.remove('bg-light'));
     radio.checked = true;
@@ -144,7 +139,7 @@
     }
 
     function submitAnswer(questionId) {
-    // Очищаем таймер
+
     if (window.currentTimer) {
     clearInterval(window.currentTimer);
     }
@@ -163,14 +158,13 @@
     submitBtn.disabled = true;
     submitBtn.textContent = '⏳ Отправка...';
 
-    // ⭐ Правильный формат данных
     const data = {
     sessionId: sessionId,
     questionId: questionId,
     selectedOptionIds: selected
     };
 
-    console.log('Sending data:', data); // Для отладки
+    console.log('Sending data:', data);
 
     fetch('/Quiz/SubmitAnswer', {
     method: 'POST',

@@ -158,6 +158,61 @@ namespace QuizMvp.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Statistics()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return RedirectToAction("Login", "Account");
+
+            var quizzes = await _context.Quizzes
+                .Where(q => q.CreatorId == userId)
+                .Include(q => q.Sessions)
+                .ThenInclude(s => s.ParticipantAnswers)
+                .OrderByDescending(q => q.CreatedAt)
+                .ToListAsync();
+
+            var stats = quizzes.Select(q => new
+            {
+                QuizTitle = q.Title,
+                QuizId = q.Id,
+                TotalSessions = q.Sessions.Count,
+                TotalParticipants = q.Sessions.SelectMany(s => s.ParticipantAnswers)
+                    .Select(a => a.UserId)
+                    .Distinct()
+                    .Count(),
+                AverageScore = q.Sessions
+                    .SelectMany(s => s.ParticipantAnswers)
+                    .GroupBy(a => a.UserId)
+                    .Select(g => g.Sum(a => a.PointsEarned))
+                    .DefaultIfEmpty(0)
+                    .Average()
+            }).ToList();
+
+            ViewBag.Statistics = stats;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return RedirectToAction("Login", "Account");
+
+            var quiz = await _context.Quizzes
+                .Include(q => q.Questions)
+                .Include(q => q.Sessions)
+                .ThenInclude(s => s.ParticipantAnswers)
+                .ThenInclude(pa => pa.User)
+                .FirstOrDefaultAsync(q => q.Id == id && q.CreatorId == userId);
+
+            if (quiz == null)
+                return NotFound();
+
+            return View(quiz);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Join(string roomCode)
         {
             var session = await _context.Sessions
