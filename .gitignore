@@ -1,0 +1,118 @@
+## Visual Studio / .NET / C#
+
+# Папки сборки
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio временные файлы
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Roslyn / Analyzers
+*.ruleset
+*.rsp
+
+# NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+packages/
+!packages/build/
+*.nuspec
+
+# MSBuild
+*.binlog
+*.tlog
+*.log
+*.buildlog
+
+# Тестовые результаты
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Публикация
+publish/
+*.publishsettings
+publishprofiles/
+*.pubxml
+*.pubxml.user
+
+# Node (если используется)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Пользовательские настройки
+*.rsuser
+*.VC.db
+*.VC.VC.opendb
+
+# Кэш
+*.cache
+*.dll.config
+*.exe.config
+
+# Rider
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+## C++ (если нужно)
+*.obj
+*.pch
+*.pdb
+*.idb
+*.ilk
+*.exp
+*.lib
+*.sbr
+*.bsc
+*.aps
+*.ncb
+*.opendb
+*.sdf
+*.opensdf
+*.db
+*.ipch
+*.log
+*.tlog
+*.lastbuildstate
+*.cache
+*.pgc
+*.pgd
+
+# Прочее
+*.tmp
+*.temp
+*.bak
+*.orig
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
