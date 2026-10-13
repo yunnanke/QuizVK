@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuizMvp.Data;
 using QuizMvp.Models;
+using QuizMvp.Services;
 using System.Text.Json;
 
 namespace QuizMvp.Controllers
@@ -282,8 +283,7 @@ namespace QuizMvp.Controllers
                 var selectedIds = submission.SelectedOptionIds ?? new List<int>();
                 var correctIds = question.Options.Where(o => o.IsCorrect).Select(o => o.Id).ToList();
 
-                bool isCorrect = correctIds.Count == selectedIds.Count &&
-                                 !correctIds.Except(selectedIds).Any();
+                var score = AnswerScoringService.Score(correctIds, selectedIds, question.Points);
 
                 var answer = new ParticipantAnswer
                 {
@@ -291,8 +291,8 @@ namespace QuizMvp.Controllers
                     QuestionId = submission.QuestionId,
                     UserId = userId.Value,
                     SelectedOptionIds = JsonSerializer.Serialize(selectedIds),
-                    IsCorrect = isCorrect,
-                    PointsEarned = isCorrect ? question.Points : 0,
+                    IsCorrect = score.IsCorrect,
+                    PointsEarned = score.PointsEarned,
                     SubmittedAt = DateTime.UtcNow
                 };
 
@@ -301,9 +301,9 @@ namespace QuizMvp.Controllers
 
                 return Ok(new
                 {
-                    isCorrect,
+                    isCorrect = score.IsCorrect,
                     points = answer.PointsEarned,
-                    message = isCorrect ? "Правильно!" : "Неправильно"
+                    message = score.IsCorrect ? "Правильно!" : "Неправильно"
                 });
             }
             catch (Exception ex)
