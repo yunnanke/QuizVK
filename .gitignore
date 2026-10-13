@@ -339,6 +339,11 @@ yarn-error.log*
 *.pgc
 *.pgd
 
+*.db
+*.db-shm
+*.db-wal
+*.sourcelink.json
+
 # Прочее
 *.tmp
 *.temp
