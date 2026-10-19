@@ -71,6 +71,17 @@ public sealed class AuthControllerTests
     }
 
     [Fact]
+    public async Task Register_Get_ReturnsRegistrationForm()
+    {
+        using var factory = new TestWebApplicationFactory();
+        using var client = CreateClient(factory);
+
+        var response = await client.GetAsync("/Account/Register");
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    [Fact]
     public async Task Register_DuplicateUsername_DoesNotCreateSecondUser()
     {
         using var factory = new TestWebApplicationFactory();
@@ -121,6 +132,17 @@ public sealed class AuthControllerTests
         response.StatusCode.Should().Be(HttpStatusCode.Redirect);
         response.Headers.Location!.ToString().Should().Be("/");
         response.Headers.Contains("Set-Cookie").Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Login_Get_ReturnsLoginForm()
+    {
+        using var factory = new TestWebApplicationFactory();
+        using var client = CreateClient(factory);
+
+        var response = await client.GetAsync("/Account/Login");
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Theory]
