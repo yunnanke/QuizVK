@@ -23,12 +23,13 @@ namespace QuizMvp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(string? username, string? password)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Username == username);
+            var user = username is null
+                ? null
+                : await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
 
-            if (user != null && VerifyPassword(password, user.PasswordHash))
+            if (user != null && !string.IsNullOrEmpty(password) && VerifyPassword(password, user.PasswordHash))
             {
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 HttpContext.Session.SetString("Username", user.Username);

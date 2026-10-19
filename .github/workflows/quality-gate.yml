@@ -15,4 +15,5 @@ jobs:
           dotnet-version: 8.0.x
       - run: dotnet restore QuizMvp.sln
       - run: dotnet build QuizMvp.sln --no-restore --configuration Release
+      - run: dotnet test QuizMvp.sln --no-build --configuration Release
       - run: dotnet run --project QuizMvp.LogicTests/QuizMvp.LogicTests.csproj --no-build --configuration Release
