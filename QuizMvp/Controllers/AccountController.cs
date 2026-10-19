@@ -10,10 +10,14 @@ namespace QuizMvp.Controllers
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly AuthenticationModuleSettings _authenticationSettings;
 
-        public AccountController(ApplicationDbContext context)
+        public AccountController(
+            ApplicationDbContext context,
+            AuthenticationModuleSettings authenticationSettings)
         {
             _context = context;
+            _authenticationSettings = authenticationSettings;
         }
 
         [HttpGet]
@@ -44,12 +48,22 @@ namespace QuizMvp.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            if (!_authenticationSettings.RegistrationEnabled)
+            {
+                return RegistrationUnavailable();
+            }
+
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(string username, string email, string password, string role)
         {
+            if (!_authenticationSettings.RegistrationEnabled)
+            {
+                return RegistrationUnavailable();
+            }
+
             if (await _context.Users.AnyAsync(u => u.Username == username))
             {
                 ViewBag.Error = "Пользователь с таким именем уже существует";
@@ -90,6 +104,13 @@ namespace QuizMvp.Controllers
         private bool VerifyPassword(string password, string hash)
         {
             return HashPassword(password) == hash;
+        }
+
+        private IActionResult RegistrationUnavailable()
+        {
+            Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+            ViewBag.Error = "Регистрация временно отключена настройками приложения.";
+            return View("Register");
         }
     }
 }

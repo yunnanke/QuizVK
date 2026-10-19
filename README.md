@@ -30,26 +30,33 @@
 ## Установка и запуск
 
 ### Требования
-*   [.NET SDK](https://dotnet.microsoft.com/download) (версия, совместимая с проектом)
-*   Visual Studio 2022 или более новая версия (рекомендуется)
+*   .NET SDK 10.0.401 (версия закреплена в `global.json`)
+*   .NET 8 runtime для запуска приложения с целевой платформой `net8.0`
+*   Visual Studio 2022 или более новая версия (необязательно)
 
 ### Инструкция
-1.  **Клонировать репозиторий:**
+1. **Клонировать репозиторий и перейти в корень:**
     ```bash
     git clone https://github.com/yunnanke/QuizVK.git
     cd QuizVK
     ```
-2.  **Открыть решение:** Дважды щелкните по файлу `QuizMvp.sln`, чтобы открыть проект в Visual Studio.
-3.  **Восстановить зависимости:** В Visual Studio выберите `Собрать` > `Восстановить пакеты NuGet` или выполните в терминале:
+2. **Перейти на ветку с готовой практической работой** (после её публикации):
     ```bash
-    dotnet restore
+    git checkout <ветка-практики>
     ```
-4.  **Собрать и запустить:** Нажмите `F5` или выберите `Запустить` в меню отладки.
-
-Также можно собрать и запустить проект из командной строки из папки с проектом (`QuizMvp`):
+3. **Восстановить зафиксированные версии зависимостей и собрать приложение:**
 ```bash
-dotnet build
-dotnet run
+dotnet restore QuizMvp.sln --locked-mode
+dotnet build QuizMvp.sln --no-restore --configuration Release
+dotnet test QuizMvp.sln --no-build --configuration Release
+```
+4. **Запустить веб-приложение:**
+```bash
+dotnet run --project QuizMvp/QuizMvp.csproj --configuration Release
+```
+В консоли появится адрес локального сервера. Версию компонента и состояние настройки регистрации можно получить запросом `/_diagnostics/authentication`. Переключатель `Authentication:RegistrationEnabled` принимает только `true` или `false`; пример безопасной конфигурации находится в `QuizMvp/appsettings.json`.
+
+Команды сравнения Debug и Release, проверки отключённой регистрации и запуска результата вне каталога исходников приведены в [описании инструментального контура](docs/toolchain.md).
 ```
 
 ## Автор
