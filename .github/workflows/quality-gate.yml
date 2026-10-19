@@ -14,5 +14,16 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - run: dotnet restore QuizMvp.sln
-      - run: dotnet build QuizMvp.sln --no-restore --configuration Release
+      - run: dotnet build QuizMvp.sln --no-restore --configuration Release -p:SourceRevisionId=${{ github.sha }}
       - run: dotnet run --project QuizMvp.LogicTests/QuizMvp.LogicTests.csproj --no-build --configuration Release
+      - name: Check required runtime configuration
+        shell: pwsh
+        run: dotnet run --project QuizMvp/QuizMvp.csproj --no-build --configuration Release -- --check-runtime-config
+      - name: Reject missing runtime configuration
+        shell: pw
+        run: |
+          $env:ConnectionStrings__DefaultConnection = ''
+          dotnet run --project QuizMvp/QuizMvp.csproj --no-build --configuration Release -- --check-runtime-config
+          if ($LASTEXITCODE -eq 0) {
+            throw "The application accepted an empty DefaultConnection."
+          }
