@@ -4,6 +4,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Version>0.1.0</Version>
+    <InformationalVersion Condition="'$(SourceRevisionId)' == ''">0.1.0+local</InformationalVersion>
+    <InformationalVersion Condition="'$(SourceRevisionId)' != ''">0.1.0+$(SourceRevisionId)</InformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>
