@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using QuizMvp.Data;
 using QuizMvp.Hubs;
 using QuizMvp.Infrastructure;
+using QuizMvp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var runtimeCheckRequested = args.Contains("--check-runtime-config", StringComparer.OrdinalIgnoreCase);
@@ -28,6 +29,7 @@ if (runtimeCheckRequested)
 
 // Добавление сервисов
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IAnswerScoringService, ExactMatchAnswerScoringService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

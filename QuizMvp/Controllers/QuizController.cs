@@ -10,10 +10,12 @@ namespace QuizMvp.Controllers
     public class QuizController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAnswerScoringService _answerScoringService;
 
-        public QuizController(ApplicationDbContext context)
+        public QuizController(ApplicationDbContext context, IAnswerScoringService answerScoringService)
         {
             _context = context;
+            _answerScoringService = answerScoringService;
         }
 
         [HttpGet]
@@ -283,7 +285,7 @@ namespace QuizMvp.Controllers
                 var selectedIds = submission.SelectedOptionIds ?? new List<int>();
                 var correctIds = question.Options.Where(o => o.IsCorrect).Select(o => o.Id).ToList();
 
-                var score = AnswerScoringService.Score(correctIds, selectedIds, question.Points);
+                var score = _answerScoringService.Score(correctIds, selectedIds, question.Points);
 
                 var answer = new ParticipantAnswer
                 {

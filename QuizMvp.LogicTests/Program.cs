@@ -27,29 +27,38 @@ if (mutationCheck)
     return 0;
 }
 
-var failures = 0;
-foreach (var testCase in cases)
+var strategies = new (string Name, IAnswerScoringService Service)[]
 {
-    try
-    {
-        var actual = AnswerScoringService.Score(testCase.CorrectIds, testCase.SelectedIds, testCase.Points);
-        if (testCase.ExpectedException is null && Matches(actual, testCase))
-        {
-            Console.WriteLine($"PASS {testCase.Id}: {testCase.DesignTechnique}");
-            continue;
-        }
+    (nameof(ExactMatchAnswerScoringService), new ExactMatchAnswerScoringService()),
+    (nameof(SetExactMatchAnswerScoringService), new SetExactMatchAnswerScoringService())
+};
 
-        failures++;
-        Console.Error.WriteLine($"FAIL {testCase.Id}: expected assertion was not met.");
-    }
-    catch (Exception exception) when (testCase.ExpectedException?.IsInstanceOfType(exception) == true)
+var failures = 0;
+foreach (var strategy in strategies)
+{
+    foreach (var testCase in cases)
     {
-        Console.WriteLine($"PASS {testCase.Id}: expected {exception.GetType().Name}.");
-    }
-    catch (Exception exception)
-    {
-        failures++;
-        Console.Error.WriteLine($"FAIL {testCase.Id}: unexpected {exception.GetType().Name}.");
+        try
+        {
+            var actual = strategy.Service.Score(testCase.CorrectIds, testCase.SelectedIds, testCase.Points);
+            if (testCase.ExpectedException is null && Matches(actual, testCase))
+            {
+                Console.WriteLine($"PASS {strategy.Name} {testCase.Id}: {testCase.DesignTechnique}");
+                continue;
+            }
+
+            failures++;
+            Console.Error.WriteLine($"FAIL {strategy.Name} {testCase.Id}: expected assertion was not met.");
+        }
+        catch (Exception exception) when (testCase.ExpectedException?.IsInstanceOfType(exception) == true)
+        {
+            Console.WriteLine($"PASS {strategy.Name} {testCase.Id}: expected {exception.GetType().Name}.");
+        }
+        catch (Exception exception)
+        {
+            failures++;
+            Console.Error.WriteLine($"FAIL {strategy.Name} {testCase.Id}: unexpected {exception.GetType().Name}.");
+        }
     }
 }
 
