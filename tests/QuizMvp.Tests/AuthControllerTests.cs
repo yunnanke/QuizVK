@@ -145,6 +145,21 @@ public sealed class AuthControllerTests
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
+    [Fact]
+    public async Task Login_MissingUsername_ShowsLoginFormWithoutCreatingUser()
+    {
+        using var factory = new TestWebApplicationFactory();
+        using var client = CreateClient(factory);
+
+        var response = await client.PostAsync("/Account/Login", new FormUrlEncodedContent(new Dictionary<string, string>
+        {
+            ["password"] = "Passw0rd!"
+        }));
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        (await UserCountAsync(factory)).Should().Be(0);
+    }
+
     [Theory]
     [InlineData("Incorrect!")]
     [InlineData("Passw0rd")]
