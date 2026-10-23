@@ -32,6 +32,11 @@ public sealed class AuthenticationModule : IAuthenticationModule
             return new RegistrationResult(RegistrationStatus.Disabled, null);
         }
 
+        if (!RegistrationPasswordPolicy.IsValid(request.Password))
+        {
+            return new RegistrationResult(RegistrationStatus.InvalidPassword, null);
+        }
+
         var username = request.Username ?? string.Empty;
         if (await _context.Users.AnyAsync(user => user.Username == username, cancellationToken))
         {
