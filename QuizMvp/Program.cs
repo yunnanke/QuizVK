@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Text.Json;
+using QuizMvp.Authentication;
 using QuizMvp.Data;
 using QuizMvp.Hubs;
 using QuizMvp.Models;
+using QuizMvp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,7 @@ builder.Services.AddSession(options =>
 // Настройка SQLite
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IAuthenticationModule, AuthenticationModule>();
 
 // Добавление SignalR
 builder.Services.AddSignalR();
