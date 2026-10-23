@@ -6,11 +6,12 @@ using QuizMvp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var runtimeCheckRequested = args.Contains("--check-runtime-config", StringComparer.OrdinalIgnoreCase);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration["QUIZVK_CONNECTION_STRING"]
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (string.IsNullOrWhiteSpace(connectionString))
 {
-    const string message = "Configuration error: ConnectionStrings:DefaultConnection must be provided.";
+    const string message = "Configuration error: set QUIZVK_CONNECTION_STRING or ConnectionStrings:DefaultConnection.";
 
     if (runtimeCheckRequested)
     {
@@ -30,6 +31,7 @@ if (runtimeCheckRequested)
 // Добавление сервисов
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IAnswerScoringService, ExactMatchAnswerScoringService>();
+builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -38,9 +40,9 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Настройка SQLite
+// PostgreSQL connection is supplied through the environment or .NET user-secrets.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseNpgsql(connectionString));
 
 // Добавление SignalR
 builder.Services.AddSignalR();
@@ -74,13 +76,10 @@ app.MapGet("/health", () => Results.Ok(new
     version = BuildInfo.Version,
     environment = app.Environment.EnvironmentName
 }));
-
-// Создание базы данных при запуске
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.EnsureCreated();
-}
+app.MapGet("/health/ready", async (ApplicationDbContext dbContext, CancellationToken cancellationToken) =>
+    await dbContext.Database.CanConnectAsync(cancellationToken)
+        ? Results.Ok(new { status = "ready" })
+        : Results.StatusCode(StatusCodes.Status503ServiceUnavailable));
 
 app.Logger.LogInformation(
     "QuizVK started. Version {Version}; Environment {Environment}",

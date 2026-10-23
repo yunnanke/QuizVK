@@ -52,6 +52,19 @@ dotnet build
 dotnet run
 ```
 
+### PostgreSQL (Neon)
+
+Backend использует существующие таблицы схемы `public` в Neon. Строка подключения хранится только в пользовательском окружении или в .NET user-secrets; в `appsettings.json` и Git её нет.
+
+Для текущего пользователя Windows задайте переменную окружения `QUIZVK_CONNECTION_STRING` со строкой подключения Neon, затем откройте новый терминал. Для локальной разработки можно вместо этого сохранить её в user-secrets:
+
+```powershell
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "<Neon connection string>" --project QuizMvp
+dotnet run --project QuizMvp
+```
+
+Приложение также принимает стандартную переменную `ConnectionStrings__DefaultConnection`. EF Core использует Npgsql 8. Для создания схемы в новой пустой базе применяйте миграции командой `dotnet ef database update --project QuizMvp --startup-project QuizMvp`; существующая база уже содержит baseline `20260624171931_InitialPostgres`.
+
 ## Автор
 
 **yunnanke** — [GitHub профиль](https://github.com/yunnanke)

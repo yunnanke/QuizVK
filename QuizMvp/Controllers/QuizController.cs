@@ -3,19 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using QuizMvp.Data;
 using QuizMvp.Models;
 using QuizMvp.Services;
-using System.Text.Json;
 
 namespace QuizMvp.Controllers
 {
     public class QuizController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IAnswerScoringService _answerScoringService;
+        private readonly IQuizService _quizService;
 
-        public QuizController(ApplicationDbContext context, IAnswerScoringService answerScoringService)
+        public QuizController(ApplicationDbContext context, IQuizService quizService)
         {
             _context = context;
-            _answerScoringService = answerScoringService;
+            _quizService = quizService;
         }
 
         [HttpGet]
@@ -59,10 +58,9 @@ namespace QuizMvp.Controllers
                 }).ToList()
             };
 
-            _context.Quizzes.Add(quiz);
-            await _context.SaveChangesAsync();
+            var quizId = await _quizService.CreateQuizAsync(quiz, userId.Value);
 
-            return Ok(new { id = quiz.Id });
+            return Ok(new { id = quizId });
         }
 
         [HttpGet]
@@ -101,21 +99,15 @@ namespace QuizMvp.Controllers
             if (quiz == null)
                 return NotFound();
 
-            var roomCode = GenerateRoomCode();
-            var session = new Session
-            {
-                QuizId = quizId,
-                JoinCode = roomCode,
-                StartedAt = DateTime.UtcNow,
-                Status = SessionStatus.Active,
-                CurrentQuestionIndex = 0
-            };
+            if (quiz.CreatorId != userId.Value)
+                return Forbid();
 
-            _context.Sessions.Add(session);
-            await _context.SaveChangesAsync();
+            var session = await _quizService.StartSessionAsync(quizId, userId.Value, SessionStatus.Active);
+            if (session == null)
+                return NotFound();
 
             ViewBag.SessionId = session.Id;
-            ViewBag.RoomCode = roomCode;
+            ViewBag.RoomCode = session.JoinCode;
             ViewBag.TotalQuestions = quiz.Questions.Count;
 
             return View(quiz);
@@ -128,35 +120,17 @@ namespace QuizMvp.Controllers
             if (userId == null)
                 return Unauthorized();
 
-            var quiz = await _context.Quizzes
-                .Include(q => q.Questions)
-                .FirstOrDefaultAsync(q => q.Id == quizId);
-
-            if (quiz == null)
+            var session = await _quizService.StartSessionAsync(quizId, userId.Value);
+            if (session == null)
                 return NotFound();
 
-            var roomCode = GenerateRoomCode();
-            while (await _context.Sessions.AnyAsync(s => s.JoinCode == roomCode))
-            {
-                roomCode = GenerateRoomCode();
-            }
-
-            var session = new Session
-            {
-                QuizId = quizId,
-                JoinCode = roomCode,
-                StartedAt = DateTime.UtcNow,
-                Status = SessionStatus.Waiting
-            };
-
-            _context.Sessions.Add(session);
-            await _context.SaveChangesAsync();
+            var totalQuestions = await _context.Questions.CountAsync(q => q.QuizId == quizId);
 
             return Ok(new
             {
                 sessionId = session.Id,
-                roomCode = roomCode,
-                totalQuestions = quiz.Questions.Count
+                roomCode = session.JoinCode,
+                totalQuestions
             });
         }
 
@@ -266,53 +240,28 @@ namespace QuizMvp.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitAnswer([FromBody] AnswerSubmission submission)
         {
-            try
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return Unauthorized(new { error = "Пользователь не авторизован" });
+
+            if (submission == null)
+                return BadRequest(new { error = "Данные не переданы" });
+
+            var score = await _quizService.SubmitAnswerAsync(
+                submission.SessionId,
+                submission.QuestionId,
+                userId.Value,
+                submission.SelectedOptionIds);
+
+            if (score == null)
+                return BadRequest(new { error = "Ответ не относится к активной сессии или содержит неверные варианты" });
+
+            return Ok(new
             {
-                var userId = HttpContext.Session.GetInt32("UserId");
-                if (userId == null)
-                    return Unauthorized(new { error = "Пользователь не авторизован" });
-
-                if (submission == null)
-                    return BadRequest(new { error = "Данные не переданы" });
-
-                var question = await _context.Questions
-                    .Include(q => q.Options)
-                    .FirstOrDefaultAsync(q => q.Id == submission.QuestionId);
-
-                if (question == null)
-                    return NotFound(new { error = "Вопрос не найден" });
-
-                var selectedIds = submission.SelectedOptionIds ?? new List<int>();
-                var correctIds = question.Options.Where(o => o.IsCorrect).Select(o => o.Id).ToList();
-
-                var score = _answerScoringService.Score(correctIds, selectedIds, question.Points);
-
-                var answer = new ParticipantAnswer
-                {
-                    SessionId = submission.SessionId,
-                    QuestionId = submission.QuestionId,
-                    UserId = userId.Value,
-                    SelectedOptionIds = JsonSerializer.Serialize(selectedIds),
-                    IsCorrect = score.IsCorrect,
-                    PointsEarned = score.PointsEarned,
-                    SubmittedAt = DateTime.UtcNow
-                };
-
-                _context.ParticipantAnswers.Add(answer);
-                await _context.SaveChangesAsync();
-
-                return Ok(new
-                {
-                    isCorrect = score.IsCorrect,
-                    points = answer.PointsEarned,
-                    message = score.IsCorrect ? "Правильно!" : "Неправильно"
-                });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error submitting answer: {ex.Message}");
-                return StatusCode(500, new { error = ex.Message });
-            }
+                isCorrect = score.IsCorrect,
+                points = score.PointsEarned,
+                message = score.IsCorrect ? "Правильно!" : "Неправильно"
+            });
         }
 
         [HttpGet]
@@ -331,14 +280,6 @@ namespace QuizMvp.Controllers
                 .ToListAsync();
 
             return Ok(answers);
-        }
-
-        private string GenerateRoomCode()
-        {
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            return new string(Enumerable.Repeat(chars, 6)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         [HttpGet]
