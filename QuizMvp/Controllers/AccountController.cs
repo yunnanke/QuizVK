@@ -64,6 +64,15 @@ namespace QuizMvp.Controllers
                 return View();
             }
 
+            if (result.Status == RegistrationStatus.InvalidPassword)
+            {
+                ViewBag.Error = $"Регистрация отклонена. Пароль не соответствует требованиям: {RegistrationPasswordPolicy.RequirementsMessage}";
+                ViewBag.Username = username;
+                ViewBag.Email = email;
+                ViewBag.Role = role;
+                return View();
+            }
+
             if (result.Status != RegistrationStatus.Registered || result.Account is not { } account)
             {
                 throw new InvalidOperationException("Модуль аутентификации вернул неизвестный результат регистрации.");

@@ -14,7 +14,8 @@ public interface IAuthenticationModule
 
     /// <summary>
     /// Регистрирует пользователя. Возвращает один из исходов: создана учётная запись,
-    /// регистрация отключена или имя уже занято. При успехе возвращает данные для сессии.
+    /// регистрация отключена, пароль не соответствует требованиям или имя уже занято.
+    /// При успехе возвращает данные для сессии.
     /// </summary>
     Task<RegistrationResult> RegisterAsync(
         RegistrationRequest request,
@@ -37,6 +38,7 @@ public enum RegistrationStatus
 {
     Registered,
     Disabled,
+    InvalidPassword,
     UsernameAlreadyExists
 }
 
