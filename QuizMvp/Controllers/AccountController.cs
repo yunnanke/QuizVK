@@ -1,23 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using QuizMvp.Data;
-using QuizMvp.Models;
-using System.Security.Cryptography;
-using System.Text;
+using QuizMvp.Authentication;
 
 namespace QuizMvp.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly AuthenticationModuleSettings _authenticationSettings;
+        private readonly IAuthenticationModule _authenticationModule;
 
-        public AccountController(
-            ApplicationDbContext context,
-            AuthenticationModuleSettings authenticationSettings)
+        public AccountController(IAuthenticationModule authenticationModule)
         {
-            _context = context;
-            _authenticationSettings = authenticationSettings;
+            _authenticationModule = authenticationModule;
         }
 
         [HttpGet]
@@ -29,15 +21,13 @@ namespace QuizMvp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string? username, string? password)
         {
-            var user = username is null
-                ? null
-                : await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            var result = await _authenticationModule.AuthenticateAsync(
+                new LoginRequest(username, password),
+                HttpContext.RequestAborted);
 
-            if (user != null && !string.IsNullOrEmpty(password) && VerifyPassword(password, user.PasswordHash))
+            if (result.Status == AuthenticationStatus.Authenticated && result.Account is { } account)
             {
-                HttpContext.Session.SetInt32("UserId", user.Id);
-                HttpContext.Session.SetString("Username", user.Username);
-                HttpContext.Session.SetString("Role", user.Role);
+                SetSession(account);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -48,7 +38,7 @@ namespace QuizMvp.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            if (!_authenticationSettings.RegistrationEnabled)
+            if (!_authenticationModule.RegistrationEnabled)
             {
                 return RegistrationUnavailable();
             }
@@ -59,31 +49,27 @@ namespace QuizMvp.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(string username, string email, string password, string role)
         {
-            if (!_authenticationSettings.RegistrationEnabled)
+            var result = await _authenticationModule.RegisterAsync(
+                new RegistrationRequest(username, email, password, role),
+                HttpContext.RequestAborted);
+
+            if (result.Status == RegistrationStatus.Disabled)
             {
                 return RegistrationUnavailable();
             }
 
-            if (await _context.Users.AnyAsync(u => u.Username == username))
+            if (result.Status == RegistrationStatus.UsernameAlreadyExists)
             {
                 ViewBag.Error = "Пользователь с таким именем уже существует";
                 return View();
             }
 
-            var user = new User
+            if (result.Status != RegistrationStatus.Registered || result.Account is not { } account)
             {
-                Username = username,
-                Email = email,
-                PasswordHash = HashPassword(password),
-                Role = role ?? "Participant"
-            };
+                throw new InvalidOperationException("Модуль аутентификации вернул неизвестный результат регистрации.");
+            }
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            HttpContext.Session.SetInt32("UserId", user.Id);
-            HttpContext.Session.SetString("Username", user.Username);
-            HttpContext.Session.SetString("Role", user.Role);
+            SetSession(account);
 
             return RedirectToAction("Index", "Home");
         }
@@ -94,16 +80,11 @@ namespace QuizMvp.Controllers
             return RedirectToAction("Login");
         }
 
-        private string HashPassword(string password)
+        private void SetSession(AuthenticatedAccount account)
         {
-            using var sha256 = SHA256.Create();
-            var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(bytes);
-        }
-
-        private bool VerifyPassword(string password, string hash)
-        {
-            return HashPassword(password) == hash;
+            HttpContext.Session.SetInt32("UserId", account.Id);
+            HttpContext.Session.SetString("Username", account.Username);
+            HttpContext.Session.SetString("Role", account.Role);
         }
 
         private IActionResult RegistrationUnavailable()
