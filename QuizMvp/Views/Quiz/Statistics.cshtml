@@ -1,51 +1,59 @@
-﻿@{
+@{
     ViewData["Title"] = "Статистика";
-    var stats = ViewBag.Statistics as List<dynamic>;
+    var stats = ViewBag.Statistics as IEnumerable<dynamic>;
 }
 
-<div class="container mt-4">
+@section Styles {
+    <link rel="stylesheet" href="~/css/quiz-workspace.css" asp-append-version="true" />
+}
+
+<div class="quiz-workspace statistics-page">
     <div class="row">
         <div class="col-12">
-            <h2>Статистика квизов</h2>
-            <hr />
-            
-            @if (stats == null || stats.Count == 0)
+            <header class="workspace-hero stats-hero">
+                <div>
+                    <div class="workspace-eyebrow"><span></span>АНАЛИТИКА И РЕЗУЛЬТАТЫ</div>
+                    <h1>Статистика квизов</h1>
+                    <p>Посмотрите, сколько игр вы провели и как участники справились с вопросами.</p>
+                </div>
+                <div class="workspace-hero-mark stats-mark" aria-hidden="true">
+                    <span class="bar bar-one"></span><span class="bar bar-two"></span><span class="bar bar-three"></span>
+                </div>
+            </header>
+
+            @if (stats == null || !stats.Any())
             {
-                <div class="text-center p-5">
-                    <h4>У вас пока нет статистики</h4>
-                    <p class="text-muted">Создайте и проведите квизы, чтобы увидеть статистику</p>
-                    <a href="/Quiz/Create" class="btn btn-primary mt-3">Создать квиз</a>
+                <div class="empty-state">
+                    <div class="empty-state-icon stats-empty-icon" aria-hidden="true">↗</div>
+                    <h2>Данные появятся после первой игры</h2>
+                    <p>Создайте квиз и проведите игру, чтобы здесь появилась аналитика.</p>
+                    <a href="/Quiz/Create" class="hero-action">Создать квиз <span aria-hidden="true">→</span></a>
                 </div>
             }
             else
             {
-                <div class="row">
+                <div class="row stats-card-grid">
                     @foreach (var item in stats)
                     {
                         <div class="col-md-4 mb-4">
-                            <div class="card shadow-sm h-100">
+                            <article class="card stats-tile h-100">
                                 <div class="card-body">
-                                    <h5 class="card-title">@item.QuizTitle</h5>
-                                    <div class="mt-3">
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span>Проведено игр:</span>
-                                            <strong>@item.TotalSessions</strong>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span>Участников:</span>
-                                            <strong>@item.TotalParticipants</strong>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <span>Средний балл:</span>
-                                            <strong>@Math.Round((decimal)item.AverageScore, 1)</strong>
-                                        </div>
+                                    <div class="stats-tile-heading">
+                                        <span class="stats-icon" aria-hidden="true">✦</span>
+                                        <span class="category-chip">РЕЗУЛЬТАТЫ</span>
+                                    </div>
+                                    <h2 class="card-title">@item.QuizTitle</h2>
+                                    <div class="metric-list">
+                                        <div class="metric-row"><span>Проведено игр</span><strong>@item.TotalSessions</strong></div>
+                                        <div class="metric-row"><span>Участников</span><strong>@item.TotalParticipants</strong></div>
+                                        <div class="metric-row metric-highlight"><span>Средний балл</span><strong>@Math.Round((decimal)item.AverageScore, 1)</strong></div>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <a href="/Quiz/Details/@item.QuizId" class="btn btn-outline-primary btn-sm">Подробнее</a>
-                                    <a href="/Quiz/Play?quizId=@item.QuizId" class="btn btn-outline-success btn-sm">▶️ Играть</a>
-                                </div>
-                            </div>
+                                <footer class="stats-tile-footer">
+                                    <a href="/Quiz/Details/@item.QuizId" class="quiz-action quiz-action-preview">Подробные результаты</a>
+                                    <a href="/Quiz/Play?quizId=@item.QuizId" class="quiz-action quiz-action-launch">Играть</a>
+                                </footer>
+                            </article>
                         </div>
                     }
                 </div>

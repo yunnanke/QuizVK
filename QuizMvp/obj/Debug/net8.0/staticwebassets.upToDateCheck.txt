@@ -1,3 +1,5 @@
+wwwroot\css\home-dashboard.css
+wwwroot\css\quiz-workspace.css
 wwwroot\css\site.css
 wwwroot\index.html
 wwwroot\js\app.js
