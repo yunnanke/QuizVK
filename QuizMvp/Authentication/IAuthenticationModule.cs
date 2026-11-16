@@ -39,7 +39,8 @@ public enum RegistrationStatus
     Registered,
     Disabled,
     InvalidPassword,
-    UsernameAlreadyExists
+    UsernameAlreadyExists,
+    StorageUnavailable
 }
 
 /// <summary>Исход регистрации и данные новой учётной записи при успехе.</summary>
@@ -52,7 +53,8 @@ public sealed record LoginRequest(string? Username, string? Password);
 public enum AuthenticationStatus
 {
     Authenticated,
-    InvalidCredentials
+    InvalidCredentials,
+    StorageUnavailable
 }
 
 /// <summary>Исход проверки учётных данных и сведения пользователя при успехе.</summary>

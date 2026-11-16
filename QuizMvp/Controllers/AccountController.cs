@@ -25,6 +25,13 @@ namespace QuizMvp.Controllers
                 new LoginRequest(username, password),
                 HttpContext.RequestAborted);
 
+            if (result.Status == AuthenticationStatus.StorageUnavailable)
+            {
+                Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+                ViewBag.Error = "Хранилище временно недоступно. Попробуйте войти позже.";
+                return View();
+            }
+
             if (result.Status == AuthenticationStatus.Authenticated && result.Account is { } account)
             {
                 SetSession(account);
@@ -56,6 +63,16 @@ namespace QuizMvp.Controllers
             if (result.Status == RegistrationStatus.Disabled)
             {
                 return RegistrationUnavailable();
+            }
+
+            if (result.Status == RegistrationStatus.StorageUnavailable)
+            {
+                Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+                ViewBag.Error = "Хранилище временно недоступно. Регистрация не выполнена; попробуйте позже.";
+                ViewBag.Username = username;
+                ViewBag.Email = email;
+                ViewBag.Role = role;
+                return View();
             }
 
             if (result.Status == RegistrationStatus.UsernameAlreadyExists)
