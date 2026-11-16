@@ -279,6 +279,62 @@ namespace QuizMvp.Controllers
             return Ok(new { sessionId = session.Id });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AdvanceQuizSession(int sessionId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return Unauthorized();
+
+            var session = await _context.Sessions
+                .Include(item => item.Quiz)
+                .ThenInclude(quiz => quiz.Questions)
+                .FirstOrDefaultAsync(item => item.Id == sessionId);
+            if (session == null)
+                return NotFound();
+            if (session.Quiz.CreatorId != userId.Value)
+                return StatusCode(StatusCodes.Status403Forbidden, new { error = "Только ведущий может переключать вопросы." });
+            if (session.Status != SessionStatus.Active)
+                return BadRequest(new { error = "Квиз не запущен." });
+
+            var totalQuestions = session.Quiz.Questions.Count;
+            var nextIndex = session.CurrentQuestionIndex + 1;
+            if (nextIndex >= totalQuestions)
+                return BadRequest(new { error = "Это последний вопрос. Завершите квиз." });
+
+            session.CurrentQuestionIndex = nextIndex;
+            await _context.SaveChangesAsync();
+            await _quizHub.Clients.Group(session.JoinCode)
+                .SendAsync("ShowQuestion", nextIndex, totalQuestions);
+
+            return Ok(new { questionIndex = nextIndex, totalQuestions });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EndQuizSession(int sessionId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return Unauthorized();
+
+            var session = await _context.Sessions
+                .Include(item => item.Quiz)
+                .FirstOrDefaultAsync(item => item.Id == sessionId);
+            if (session == null)
+                return NotFound();
+            if (session.Quiz.CreatorId != userId.Value)
+                return StatusCode(StatusCodes.Status403Forbidden, new { error = "Только ведущий может завершить квиз." });
+            if (session.Status == SessionStatus.Finished)
+                return Ok();
+
+            session.Status = SessionStatus.Finished;
+            session.EndedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            await _quizHub.Clients.Group(session.JoinCode).SendAsync("QuizEnded");
+
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<IActionResult> Statistics()
         {
@@ -349,6 +405,7 @@ namespace QuizMvp.Controllers
                 return View("JoinError");
             }
 
+            ViewBag.InitialQuestionIndex = session.CurrentQuestionIndex;
             return View(session);
         }
 
@@ -400,6 +457,26 @@ namespace QuizMvp.Controllers
 
                 if (question == null)
                     return NotFound(new { error = "Вопрос не найден" });
+
+                var session = await _context.Sessions
+                    .FirstOrDefaultAsync(item => item.Id == submission.SessionId);
+                if (session == null || session.Status != SessionStatus.Active || question.QuizId != session.QuizId)
+                    return BadRequest(new { error = "Этот вопрос сейчас нельзя отправить." });
+
+                var currentQuestionId = await _context.Questions
+                    .Where(item => item.QuizId == session.QuizId)
+                    .OrderBy(item => item.Id)
+                    .Skip(session.CurrentQuestionIndex)
+                    .Select(item => item.Id)
+                    .FirstOrDefaultAsync();
+                if (question.Id != currentQuestionId)
+                    return Conflict(new { error = "Ведущий уже переключил вопрос. Обновите страницу квиза." });
+
+                var alreadyAnswered = await _context.ParticipantAnswers
+                    .AnyAsync(answer => answer.SessionId == submission.SessionId &&
+                        answer.QuestionId == submission.QuestionId && answer.UserId == userId.Value);
+                if (alreadyAnswered)
+                    return Conflict(new { error = "Вы уже ответили на этот вопрос." });
 
                 var selectedIds = submission.SelectedOptionIds ?? new List<int>();
                 var correctIds = question.Options.Where(o => o.IsCorrect).Select(o => o.Id).ToList();
@@ -474,10 +551,15 @@ namespace QuizMvp.Controllers
                 if (session == null)
                     return NotFound(new { error = "Сессия не найдена" });
 
+                if (session.Status != SessionStatus.Active)
+                    return Conflict(new { error = "Квиз ещё не начался или уже завершён." });
+
                 var questions = session.Quiz.Questions.OrderBy(q => q.Id).ToList();
 
-                if (questionIndex >= questions.Count)
+                if (questionIndex < 0 || questionIndex >= questions.Count)
                     return NotFound(new { error = "Вопрос не найден" });
+                if (questionIndex != session.CurrentQuestionIndex)
+                    return Conflict(new { error = "Этот вопрос сейчас не активен." });
 
                 var question = questions[questionIndex];
 

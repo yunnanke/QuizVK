@@ -36,16 +36,6 @@ namespace QuizMvp.Hubs
             }
         }
 
-        public async Task NextQuestion(string roomCode, int questionIndex, int totalQuestions)
-        {
-            await Clients.Group(roomCode).SendAsync("ShowQuestion", questionIndex, totalQuestions);
-        }
-
-        public async Task EndQuiz(string roomCode)
-        {
-            await Clients.Group(roomCode).SendAsync("QuizEnded");
-        }
-
         private List<string> GetParticipants(string roomCode)
         {
             if (_rooms.TryGetValue(roomCode, out var participants))

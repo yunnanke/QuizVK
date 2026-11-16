@@ -19,7 +19,7 @@
                     <h4 class="text-muted">@Model.Quiz.Title</h4>
                     <p class="text-muted">Код комнаты: <strong>@Model.JoinCode</strong></p>
                     
-                    <div class="alert alert-info">
+                    <div id="waitingNotice" class="alert alert-info">
                         <i class="bi bi-info-circle"></i> Ожидайте начала квиза
                     </div>
                     
@@ -51,8 +51,9 @@
 
         const roomCode = '@Model.JoinCode';
         const sessionId = @Model.Id;
-        let currentQuestionIndex = 0;
+        let currentQuestionIndex = @ViewBag.InitialQuestionIndex;
         let totalQuestions = @Model.Quiz.Questions.Count;
+        let hasAnsweredCurrentQuestion = false;
         const sessionIsActive = @(Model.Status == SessionStatus.Active ? "true" : "false");
 
         connection.start().then(function () {
@@ -65,6 +66,7 @@
         document.getElementById('statusContainer').innerHTML =
         '<div class="alert alert-success">Вы подключены! Ожидайте начала квиза.</div>';
         if (sessionIsActive) {
+        document.getElementById('waitingNotice').style.display = 'none';
         document.getElementById('statusContainer').innerHTML = '<div class="alert alert-success">Квиз уже начался!</div>';
         loadQuestion(currentQuestionIndex);
         }
@@ -75,15 +77,17 @@
         });
 
         connection.on("QuizStarted", function (sessionId) {
+        currentQuestionIndex = 0;
+        document.getElementById('waitingNotice').style.display = 'none';
         document.getElementById('statusContainer').innerHTML =
         '<div class="alert alert-success"> Квиз начался!</div>';
         loadQuestion(0);
         });
 
         connection.on("ShowQuestion", function (questionIndex, total) {
-        loadQuestion(questionIndex);
         currentQuestionIndex = questionIndex;
         totalQuestions = total;
+        loadQuestion(questionIndex);
         });
 
         connection.on("QuizEnded", function () {
@@ -100,7 +104,10 @@
 
         function loadQuestion(index) {
         fetch(`/Quiz/GetQuestion?sessionId=${sessionId}&questionIndex=${index}`)
-        .then(response => response.json())
+        .then(response => {
+        if (!response.ok) throw new Error('Этот вопрос больше не активен.');
+        return response.json();
+        })
         .then(data => {
         showQuestion(data);
         })
@@ -110,6 +117,7 @@
         }
 
         function showQuestion(question) {
+        hasAnsweredCurrentQuestion = false;
         const container = document.getElementById('questionContainer');
         container.style.display = 'block';
             
@@ -136,13 +144,14 @@
         <div id="optionsContainer">
         ${optionsHtml}
         </div>
-        <button class="btn btn-primary mt-3" onclick="submitAnswer(${question.id})">Ответить</button>
+        <button id="submitAnswerBtn" class="btn btn-primary mt-3" onclick="submitAnswer(${question.id})">Ответить</button>
         </div>
         </div>
         `;
         }
 
         function submitAnswer(questionId) {
+        if (hasAnsweredCurrentQuestion) return;
         const selected = [];
         document.querySelectorAll(`input[name="question_${questionId}"]:checked`).forEach(el => {
         selected.push(parseInt(el.value));
@@ -152,6 +161,7 @@
         alert('Выберите вариант ответа!');
         return;
         }
+        document.getElementById('submitAnswerBtn').disabled = true;
 
         fetch('/Quiz/SubmitAnswer', {
         method: 'POST',
@@ -164,30 +174,29 @@
         selectedOptionIds: selected
         })
         })
-        .then(response => response.json())
+        .then(async response => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Не удалось отправить ответ.');
+        return data;
+        })
         .then(data => {
+        hasAnsweredCurrentQuestion = true;
         if (data.isCorrect) {
         document.getElementById('questionContainer').innerHTML =
         `<div class="alert alert-success mt-3">Правильно! +${data.points} баллов</div>
-        <button class="btn btn-primary mt-2" onclick="nextQuestion()">Следующий вопрос →</button>`;
+        <p>Ответ принят. Ожидайте следующего вопроса от ведущего.</p>`;
         } else {
         document.getElementById('questionContainer').innerHTML =
         `<div class="alert alert-danger mt-3">Неправильно</div>
-        <button class="btn btn-primary mt-2" onclick="nextQuestion()">Следующий вопрос →</button>`;
+        <p>Ответ принят. Ожидайте следующего вопроса от ведущего.</p>`;
         }
         })
         .catch(error => {
         console.error('Error submitting answer:', error);
-        alert('Ошибка при отправке ответа');
+        const button = document.getElementById('submitAnswerBtn');
+        if (button) button.disabled = false;
+        alert(error.message || 'Ошибка при отправке ответа');
         });
-        }
-
-        function nextQuestion() {
-        if (currentQuestionIndex + 1 < totalQuestions) {
-        connection.invoke("NextQuestion", roomCode, currentQuestionIndex + 1, totalQuestions);
-        } else {
-        connection.invoke("EndQuiz", roomCode);
-        }
         }
 
         function loadLeaderboard() {
