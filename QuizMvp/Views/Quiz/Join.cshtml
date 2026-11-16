@@ -53,6 +53,7 @@
         const sessionId = @Model.Id;
         let currentQuestionIndex = 0;
         let totalQuestions = @Model.Quiz.Questions.Count;
+        const sessionIsActive = @(Model.Status == SessionStatus.Active ? "true" : "false");
 
         connection.start().then(function () {
 
@@ -63,6 +64,10 @@
                 
         document.getElementById('statusContainer').innerHTML =
         '<div class="alert alert-success">Вы подключены! Ожидайте начала квиза.</div>';
+        if (sessionIsActive) {
+        document.getElementById('statusContainer').innerHTML = '<div class="alert alert-success">Квиз уже начался!</div>';
+        loadQuestion(currentQuestionIndex);
+        }
         }).catch(function (err) {
         console.error(err);
         document.getElementById('statusContainer').innerHTML =

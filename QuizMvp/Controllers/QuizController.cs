@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
 using QuizMvp.Data;
+using QuizMvp.Hubs;
 using QuizMvp.Models;
 using QuizMvp.Services;
 using System.Text.Json;
@@ -10,10 +12,12 @@ namespace QuizMvp.Controllers
     public class QuizController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHubContext<QuizHub> _quizHub;
 
-        public QuizController(ApplicationDbContext context)
+        public QuizController(ApplicationDbContext context, IHubContext<QuizHub> quizHub)
         {
             _context = context;
+            _quizHub = quizHub;
         }
 
         [HttpGet]
@@ -24,6 +28,24 @@ namespace QuizMvp.Controllers
                 return RedirectToAction("Login", "Account");
 
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return RedirectToAction("Login", "Account");
+
+            var quiz = await _context.Quizzes
+                .Include(q => q.Questions.OrderBy(question => question.Id))
+                .ThenInclude(question => question.Options.OrderBy(option => option.Id))
+                .FirstOrDefaultAsync(q => q.Id == id && q.CreatorId == userId.Value);
+
+            if (quiz == null)
+                return NotFound();
+
+            return View(quiz);
         }
 
         [HttpPost]
@@ -63,23 +85,90 @@ namespace QuizMvp.Controllers
             return Ok(new { id = quiz.Id });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateQuiz(int id, [FromBody] QuizDto quizDto)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return Unauthorized();
+            if (quizDto == null || string.IsNullOrWhiteSpace(quizDto.Title) || quizDto.Questions == null)
+                return BadRequest(new { error = "Проверьте название квиза и список вопросов." });
+
+            var quiz = await _context.Quizzes
+                .Include(q => q.Questions)
+                .ThenInclude(question => question.Options)
+                .FirstOrDefaultAsync(q => q.Id == id && q.CreatorId == userId.Value);
+            if (quiz == null)
+                return NotFound();
+
+            var submittedIds = quizDto.Questions.Where(question => question.Id > 0).Select(question => question.Id).ToList();
+            if (submittedIds.Distinct().Count() != submittedIds.Count ||
+                submittedIds.Any(questionId => quiz.Questions.All(question => question.Id != questionId)))
+                return BadRequest(new { error = "В списке есть вопросы, которые не принадлежат этому квизу." });
+
+            var removedQuestions = quiz.Questions.Where(question => !submittedIds.Contains(question.Id)).ToList();
+            if (removedQuestions.Count > 0)
+            {
+                var removedQuestionIds = removedQuestions.Select(question => question.Id).ToList();
+                var hasAnswers = await _context.ParticipantAnswers
+                    .AnyAsync(answer => removedQuestionIds.Contains(answer.QuestionId));
+                if (hasAnswers)
+                    return BadRequest(new { error = "Нельзя удалить вопрос, на который уже отвечали в сыгранном квизе." });
+
+                _context.Questions.RemoveRange(removedQuestions);
+            }
+
+            quiz.Title = quizDto.Title.Trim();
+            quiz.Description = quizDto.Description?.Trim();
+            quiz.Category = quizDto.Category;
+            quiz.TimeLimitPerQuestion = quizDto.TimeLimit;
+            quiz.Rules = quizDto.Rules?.Trim();
+
+            foreach (var questionDto in quizDto.Questions)
+            {
+                var question = questionDto.Id > 0
+                    ? quiz.Questions.First(existing => existing.Id == questionDto.Id)
+                    : new Question { QuizId = quiz.Id, Options = new List<AnswerOption>() };
+
+                question.Text = questionDto.Text?.Trim();
+                question.Type = questionDto.Type == "image" ? QuestionType.Image : QuestionType.Text;
+                question.ImageUrl = questionDto.ImageUrl;
+                question.IsMultipleChoice = questionDto.IsMultipleChoice;
+                question.Points = questionDto.Points;
+                _context.AnswerOptions.RemoveRange(question.Options);
+                question.Options = (questionDto.Options ?? new List<AnswerOptionDto>()).Select(option => new AnswerOption
+                {
+                    Text = option.Text?.Trim(),
+                    ImageUrl = option.ImageUrl,
+                    IsCorrect = option.IsCorrect
+                }).ToList();
+
+                if (questionDto.Id == 0)
+                    quiz.Questions.Add(question);
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { id = quiz.Id });
+        }
+
         [HttpGet]
-        public async Task<IActionResult> StartQuiz(int quizId)
+        public async Task<IActionResult> StartQuiz(int? quizId)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null)
                 return RedirectToAction("Login", "Account");
+            if (quizId == null || quizId <= 0)
+                return RedirectToAction(nameof(MyQuizzes));
 
             var quiz = await _context.Quizzes
                 .Include(q => q.Questions)
                 .ThenInclude(q => q.Options)
-                .FirstOrDefaultAsync(q => q.Id == quizId);
+                .FirstOrDefaultAsync(q => q.Id == quizId.Value);
 
             if (quiz == null)
                 return NotFound();
-
             if (quiz.CreatorId != userId)
-                return Forbid();
+                return StatusCode(StatusCodes.Status403Forbidden);
 
             return View(quiz);
         }
@@ -98,6 +187,8 @@ namespace QuizMvp.Controllers
 
             if (quiz == null)
                 return NotFound();
+            if (quiz.CreatorId != userId.Value)
+                return StatusCode(StatusCodes.Status403Forbidden);
 
             var roomCode = GenerateRoomCode();
             var session = new Session
@@ -132,6 +223,8 @@ namespace QuizMvp.Controllers
 
             if (quiz == null)
                 return NotFound();
+            if (quiz.CreatorId != userId.Value)
+                return StatusCode(StatusCodes.Status403Forbidden, new { error = "У вас нет доступа к этому квизу." });
 
             var roomCode = GenerateRoomCode();
             while (await _context.Sessions.AnyAsync(s => s.JoinCode == roomCode))
@@ -156,6 +249,34 @@ namespace QuizMvp.Controllers
                 roomCode = roomCode,
                 totalQuestions = quiz.Questions.Count
             });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BeginQuizSession(int sessionId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return Unauthorized();
+
+            var session = await _context.Sessions
+                .Include(item => item.Quiz)
+                .FirstOrDefaultAsync(item => item.Id == sessionId);
+            if (session == null)
+                return NotFound();
+            if (session.Quiz.CreatorId != userId.Value)
+                return StatusCode(StatusCodes.Status403Forbidden, new { error = "Вы не можете запускать эту комнату." });
+            if (session.Status == SessionStatus.Finished)
+                return BadRequest(new { error = "Квиз уже завершён." });
+
+            if (session.Status == SessionStatus.Waiting)
+            {
+                session.Status = SessionStatus.Active;
+                session.StartedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+            }
+
+            await _quizHub.Clients.Group(session.JoinCode).SendAsync("QuizStarted", session.Id);
+            return Ok(new { sessionId = session.Id });
         }
 
         [HttpGet]
@@ -436,6 +557,7 @@ namespace QuizMvp.Controllers
 
     public class QuestionDto
     {
+        public int Id { get; set; }
         public string Text { get; set; }
         public string Type { get; set; } = "text";
         public string ImageUrl { get; set; }
@@ -446,6 +568,7 @@ namespace QuizMvp.Controllers
 
     public class AnswerOptionDto
     {
+        public int Id { get; set; }
         public string Text { get; set; }
         public string ImageUrl { get; set; }
         public bool IsCorrect { get; set; }

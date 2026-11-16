@@ -33,7 +33,7 @@
 
                     <div id="roomInfo" style="display: none;" class="mt-4">
                         <div class="alert alert-success">
-                            <h5>Квиз запущен!</h5>
+                            <h5>Комната создана</h5>
                             <p>Код комнаты: <strong id="roomCodeDisplay" class="display-4"></strong></p>
                             <p>Подключитесь к квизу по ссылке:</p>
                             <div class="input-group mb-3">
@@ -41,6 +41,8 @@
                                 <button class="btn btn-outline-primary" onclick="copyLink()">Копировать</button>
                             </div>
                             <a id="joinLinkBtn" href="#" class="btn btn-primary">🔗 Перейти в комнату</a>
+                            <button id="beginQuizBtn" type="button" class="btn btn-success ms-2" style="display:none" onclick="beginQuiz()">▶️ Начать квиз для всех</button>
+                            <p id="hostStatus" class="mt-3 mb-0">После подключения участников нажмите кнопку, чтобы начать квиз.</p>
                         </div>
                     </div>
                 </div>
@@ -78,7 +80,7 @@
     document.getElementById('joinLink').value = joinUrl;
     document.getElementById('joinLinkBtn').href = joinUrl;
             
-    btn.textContent = 'Квиз запущен!';
+    btn.textContent = 'Комната создана';
     btn.className = 'btn btn-info btn-lg';
             
     setupQuizHub(data.sessionId, data.roomCode);
@@ -99,7 +101,10 @@
     connection.start()
     .then(() => {
     console.log('SignalR connected');
-    connection.invoke("JoinRoom", roomCode, "Организатор");
+    return connection.invoke("JoinRoom", roomCode, "Организатор");
+    })
+    .then(() => {
+    document.getElementById('beginQuizBtn').style.display = 'inline-block';
     })
     .catch(err => console.error(err));
 
@@ -115,6 +120,23 @@
     window.quizHub = connection;
     window.roomCode = roomCode;
     window.sessionId = sessionId;
+    }
+
+    async function beginQuiz() {
+        const button = document.getElementById('beginQuizBtn');
+        button.disabled = true;
+        button.textContent = '⏳ Запуск...';
+        try {
+            const response = await fetch(`/Quiz/BeginQuizSession?sessionId=${window.sessionId}`, { method: 'POST' });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || 'Не удалось начать квиз');
+            button.textContent = 'Квиз начался';
+            document.getElementById('hostStatus').textContent = 'Квиз начался у всех участников комнаты.';
+        } catch (error) {
+            button.disabled = false;
+            button.textContent = '▶️ Начать квиз для всех';
+            alert(error.message);
+        }
     }
 
     function copyLink() {
