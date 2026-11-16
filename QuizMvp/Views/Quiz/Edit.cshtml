@@ -1,0 +1,117 @@
+@model Quiz
+
+@{
+    ViewData["Title"] = "Редактирование квиза";
+}
+
+<div class="container mt-4 mb-5">
+    <h1>Редактирование квиза</h1>
+    <form id="editQuizForm">
+        <input id="quizTitle" class="form-control mb-3" value="@Model.Title" required placeholder="Название" />
+        <textarea id="quizDescription" class="form-control mb-3" placeholder="Описание">@Model.Description</textarea>
+        <div class="row mb-3">
+            <div class="col-md-6"><input id="quizCategory" class="form-control" value="@Model.Category" placeholder="Категория" /></div>
+            <div class="col-md-6"><input id="quizTimeLimit" class="form-control" type="number" min="5" max="120" value="@Model.TimeLimitPerQuestion" placeholder="Секунд на вопрос" /></div>
+        </div>
+        <input id="quizRules" class="form-control mb-4" value="@Model.Rules" placeholder="Правила" />
+
+        <div id="questionsContainer">
+            @foreach (var question in Model.Questions)
+            {
+                <section class="card mb-3 question-card" data-question-id="@question.Id">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between"><h3>Вопрос</h3><button type="button" class="btn btn-outline-danger" onclick="this.closest('.question-card').remove()">Удалить вопрос</button></div>
+                        <input class="form-control mb-2 question-text" value="@question.Text" placeholder="Текст вопроса" required />
+                        <div class="row mb-2">
+                            <div class="col-md-4"><select class="form-select question-type"><option value="text" selected="@(question.Type == QuestionType.Text)">Текстовый</option><option value="image" selected="@(question.Type == QuestionType.Image)">С изображением</option></select></div>
+                            <div class="col-md-5"><input class="form-control question-image" value="@question.ImageUrl" placeholder="URL изображения" /></div>
+                            <div class="col-md-3"><input class="form-control question-points" type="number" min="1" value="@question.Points" placeholder="Баллы" /></div>
+                        </div>
+                        <label class="form-check mb-2"><input class="form-check-input question-multiple" type="checkbox" checked="@(question.IsMultipleChoice)" /> <span class="form-check-label">Можно выбрать несколько ответов</span></label>
+                        <div class="options-container">
+                            @foreach (var option in question.Options)
+                            {
+                                <div class="input-group mb-2 option-item">
+                                    <input class="form-control option-text" value="@option.Text" placeholder="Вариант ответа" required />
+                                    <input class="form-control option-image" value="@option.ImageUrl" placeholder="URL картинки" />
+                                    <label class="input-group-text"><input class="form-check-input option-correct me-2" type="checkbox" checked="@(option.IsCorrect)" />Правильный</label>
+                                    <button type="button" class="btn btn-outline-danger" onclick="this.closest('.option-item').remove()">×</button>
+                                </div>
+                            }
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="addOption(this)">Добавить вариант</button>
+                    </div>
+                </section>
+            }
+        </div>
+        <button type="button" class="btn btn-outline-primary" onclick="addQuestion()">Добавить вопрос</button>
+        <div class="mt-4"><a class="btn btn-secondary" href="/Quiz/MyQuizzes">Отмена</a> <button class="btn btn-success" type="submit">Сохранить изменения</button></div>
+    </form>
+</div>
+
+<template id="questionTemplate">
+    <section class="card mb-3 question-card" data-question-id="0"><div class="card-body">
+        <div class="d-flex justify-content-between"><h3>Вопрос</h3><button type="button" class="btn btn-outline-danger" onclick="this.closest('.question-card').remove()">Удалить вопрос</button></div>
+        <input class="form-control mb-2 question-text" placeholder="Текст вопроса" required />
+        <div class="row mb-2"><div class="col-md-4"><select class="form-select question-type"><option value="text">Текстовый</option><option value="image">С изображением</option></select></div><div class="col-md-5"><input class="form-control question-image" placeholder="URL изображения" /></div><div class="col-md-3"><input class="form-control question-points" type="number" min="1" value="10" placeholder="Баллы" /></div></div>
+        <label class="form-check mb-2"><input class="form-check-input question-multiple" type="checkbox" /> <span class="form-check-label">Можно выбрать несколько ответов</span></label>
+        <div class="options-container"></div><button type="button" class="btn btn-sm btn-outline-primary" onclick="addOption(this)">Добавить вариант</button>
+    </div></section>
+</template>
+
+<template id="optionTemplate"><div class="input-group mb-2 option-item"><input class="form-control option-text" placeholder="Вариант ответа" required /><input class="form-control option-image" placeholder="URL картинки" /><label class="input-group-text"><input class="form-check-input option-correct me-2" type="checkbox" />Правильный</label><button type="button" class="btn btn-outline-danger" onclick="this.closest('.option-item').remove()">×</button></div></template>
+
+<script>
+    function addQuestion() {
+        const question = document.getElementById('questionTemplate').content.cloneNode(true);
+        const card = question.querySelector('.question-card');
+        document.getElementById('questionsContainer').appendChild(question);
+        addOption(card.querySelector('.options-container').nextElementSibling);
+        addOption(card.querySelector('.options-container').nextElementSibling);
+    }
+
+    function addOption(button) {
+        const options = button.closest('.card-body').querySelector('.options-container');
+        options.appendChild(document.getElementById('optionTemplate').content.cloneNode(true));
+    }
+
+    document.getElementById('editQuizForm').addEventListener('submit', async event => {
+        event.preventDefault();
+        const questions = [...document.querySelectorAll('.question-card')].map(card => ({
+            Id: Number(card.dataset.questionId) || 0,
+            Text: card.querySelector('.question-text').value.trim(),
+            Type: card.querySelector('.question-type').value,
+            ImageUrl: card.querySelector('.question-image').value.trim() || null,
+            IsMultipleChoice: card.querySelector('.question-multiple').checked,
+            Points: Number(card.querySelector('.question-points').value) || 10,
+            Options: [...card.querySelectorAll('.option-item')].map(option => ({
+                Text: option.querySelector('.option-text').value.trim(),
+                ImageUrl: option.querySelector('.option-image').value.trim() || null,
+                IsCorrect: option.querySelector('.option-correct').checked
+            }))
+        }));
+        if (questions.length === 0 || questions.some(question => !question.Text || question.Options.length < 2 || !question.Options.some(option => option.IsCorrect))) {
+            alert('Для каждого вопроса нужен текст, минимум два варианта и хотя бы один правильный ответ.');
+            return;
+        }
+
+        const response = await fetch('/Quiz/UpdateQuiz?id=@Model.Id', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                Title: document.getElementById('quizTitle').value.trim(),
+                Description: document.getElementById('quizDescription').value.trim(),
+                Category: document.getElementById('quizCategory').value.trim(),
+                TimeLimit: Number(document.getElementById('quizTimeLimit').value) || 30,
+                Rules: document.getElementById('quizRules').value.trim(),
+                Questions: questions
+            })
+        });
+        const result = await response.json();
+        if (!response.ok) {
+            alert(result.error || 'Не удалось сохранить изменения.');
+            return;
+        }
+        window.location.href = '/Quiz/MyQuizzes';
+    });
+</script>
