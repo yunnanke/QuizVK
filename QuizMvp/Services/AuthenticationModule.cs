@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using QuizMvp.Authentication;
 using QuizMvp.Data;
@@ -37,42 +38,71 @@ public sealed class AuthenticationModule : IAuthenticationModule
             return new RegistrationResult(RegistrationStatus.InvalidPassword, null);
         }
 
-        var username = request.Username ?? string.Empty;
-        if (await _context.Users.AnyAsync(user => user.Username == username, cancellationToken))
+        User? user = null;
+        try
         {
-            return new RegistrationResult(RegistrationStatus.UsernameAlreadyExists, null);
+            var username = request.Username ?? string.Empty;
+            if (await _context.Users.AnyAsync(candidate => candidate.Username == username, cancellationToken))
+            {
+                return new RegistrationResult(RegistrationStatus.UsernameAlreadyExists, null);
+            }
+
+            user = new User
+            {
+                Username = username,
+                Email = request.Email ?? string.Empty,
+                PasswordHash = HashPassword(request.Password ?? string.Empty),
+                Role = request.Role ?? "Participant"
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return new RegistrationResult(RegistrationStatus.Registered, ToAccount(user));
         }
-
-        var user = new User
+        catch (SqliteException)
         {
-            Username = username,
-            Email = request.Email ?? string.Empty,
-            PasswordHash = HashPassword(request.Password ?? string.Empty),
-            Role = request.Role ?? "Participant"
-        };
+            if (user is not null)
+            {
+                _context.Entry(user).State = EntityState.Detached;
+            }
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync(cancellationToken);
+            return new RegistrationResult(RegistrationStatus.StorageUnavailable, null);
+        }
+        catch (DbUpdateException exception) when (exception.InnerException is SqliteException)
+        {
+            if (user is not null)
+            {
+                _context.Entry(user).State = EntityState.Detached;
+            }
 
-        return new RegistrationResult(RegistrationStatus.Registered, ToAccount(user));
+            return new RegistrationResult(RegistrationStatus.StorageUnavailable, null);
+        }
     }
 
     public async Task<AuthenticationResult> AuthenticateAsync(
         LoginRequest request,
         CancellationToken cancellationToken = default)
     {
-        var username = request.Username;
-        var password = request.Password;
-        var user = username is null
-            ? null
-            : await _context.Users.FirstOrDefaultAsync(candidate => candidate.Username == username, cancellationToken);
-
-        if (user is null || string.IsNullOrEmpty(password) || !VerifyPassword(password, user.PasswordHash))
+        try
         {
-            return new AuthenticationResult(AuthenticationStatus.InvalidCredentials, null);
-        }
+            var username = request.Username;
+            var password = request.Password;
+            var user = username is null
+                ? null
+                : await _context.Users.FirstOrDefaultAsync(candidate => candidate.Username == username, cancellationToken);
 
-        return new AuthenticationResult(AuthenticationStatus.Authenticated, ToAccount(user));
+            if (user is null || string.IsNullOrEmpty(password) || !VerifyPassword(password, user.PasswordHash))
+            {
+                return new AuthenticationResult(AuthenticationStatus.InvalidCredentials, null);
+            }
+
+            return new AuthenticationResult(AuthenticationStatus.Authenticated, ToAccount(user));
+        }
+        catch (SqliteException)
+        {
+            return new AuthenticationResult(AuthenticationStatus.StorageUnavailable, null);
+        }
     }
 
     private static AuthenticatedAccount ToAccount(User user) =>
